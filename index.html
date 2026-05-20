@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Jogador Pokémon</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #f7d51d 0%, #fff7bf 42%, #f4f6fb 100%);
+      color: #1f2937;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 32px auto;
+      padding: 0 16px 48px;
+    }
+
+    .top-bar {
+      height: 12px;
+      background: linear-gradient(90deg, #ffcb05 0%, #3b4cca 50%, #e3350d 100%);
+      border-radius: 10px 10px 0 0;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(31, 41, 55, 0.18);
+      margin-bottom: 14px;
+      padding: 24px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .header-card {
+      border-radius: 0 0 10px 10px;
+      border-top: none;
+    }
+
+    h1 {
+      font-size: 30px;
+      font-weight: 700;
+      margin: 0 0 12px;
+      color: #2a3fa0;
+      letter-spacing: -0.3px;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: #2a3fa0;
+    }
+
+    .description {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #4b5563;
+      margin: 0;
+    }
+
+    .required-note {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #e3350d;
+      font-weight: 600;
+    }
+
+    .question-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.4;
+      color: #111827;
+    }
+
+    .required {
+      color: #e3350d;
+      margin-left: 4px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      border: none;
+      border-bottom: 2px solid #d1d5db;
+      padding: 10px 0;
+      font-size: 15px;
+      outline: none;
+      background: transparent;
+      color: #111827;
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    textarea:focus {
+      border-bottom: 2px solid #3b4cca;
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.5;
+    }
+
+    input[type="file"] {
+      width: 100%;
+      padding: 14px;
+      border: 2px dashed #3b4cca;
+      border-radius: 8px;
+      background: #f8fbff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .help-text {
+      font-size: 13px;
+      color: #5f6368;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    .info-box {
+      background: #eef4ff;
+      border-left: 5px solid #3b4cca;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #1f2937;
+    }
+
+    .warning-box {
+      background: #fff8d6;
+      border-left: 5px solid #ffcb05;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #1f2937;
+    }
+
+    a {
+      color: #2a3fa0;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 18px;
+      gap: 16px;
+    }
+
+    button {
+      background: #3b4cca;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 30px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 0 #1f2f86;
+    }
+
+    button:hover {
+      background: #2a3fa0;
+    }
+
+    .clear-button {
+      background: transparent;
+      color: #2a3fa0;
+      padding: 10px 0;
+      box-shadow: none;
+    }
+
+    .clear-button:hover {
+      background: transparent;
+      text-decoration: underline;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: #4b5563;
+      text-align: center;
+      margin-top: 28px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        margin-top: 18px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      button,
+      .clear-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="top-bar"></div>
+
+    <section class="card header-card">
+      <h1>Cadastro de Jogador Pokémon</h1>
+      <p class="description">
+        Preencha os dados abaixo para realizar seu cadastro. Os campos marcados com asterisco são obrigatórios.
+      </p>
+      <div class="required-note">* Indica uma pergunta obrigatória</div>
+    </section>
+
+    <form 
+      action="https://submify.vercel.app/rihappy.tangara@gmail.com"
+      method="POST"
+      enctype="multipart/form-data"
+      id="formularioPokemon"
+    >
+      <section class="card">
+        <div class="question-title">
+          Nome Completo <span class="required">*</span>
+        </div>
+        <input
+          type="text"
+          name="nome_completo"
+          placeholder="Sua resposta"
+          required
+        />
+      </section>
+
+      <section class="card">
+        <div class="question-title">
+          Player ID <span class="required">*</span>
+        </div>
+
+        <input
+          type="text"
+          name="player_id"
+          placeholder="ID oficial criada no site pokemon.com"
+          required
+        />
+
+        <div class="help-text">
+          Informe sua Player ID oficial criada no site pokemon.com.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="info-box">
+          <strong>Como criar uma Player ID:</strong><br />
+          Caso ainda não tenha uma Player ID, acesse o tutorial:
+          <a 
+            href="https://copag.com.br/uploads/pokemon-jogadores/Como_vincular_um_player_ID_na_minha_conta_Pokemon.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Como vincular uma Player ID na minha conta Pokémon
+          </a>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="question-title">
+          Data de Nascimento <span class="required">*</span>
+        </div>
+        <input
+          type="date"
+          name="data_nascimento"
+          required
+        />
+      </section>
+
+      <section class="card">
+        <div class="question-title">
+          Telefone para contato <span class="required">*</span>
+        </div>
+        <input
+          type="tel"
+          name="telefone_contato"
+          placeholder="Sua resposta"
+          required
+        />
+      </section>
+
+      <section class="card">
+        <h2>DeckList <span class="required">*</span></h2>
+        <p class="description">
+          Envie sua DeckList de uma das formas abaixo: colando o texto no campo indicado ou anexando até 3 fotos.
+        </p>
+      </section>
+
+      <section class="card">
+        <div class="warning-box">
+          Escolha apenas uma opção: <strong>texto colado</strong> ou <strong>fotos da DeckList</strong>.
+          Não envie texto e fotos ao mesmo tempo.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="question-title">
+          DeckList em texto
+        </div>
+        <textarea
+          name="decklist_texto"
+          placeholder="Cole aqui sua DeckList, caso prefira enviar em texto."
+        ></textarea>
+        <div class="help-text">
+          Use este campo se quiser enviar a DeckList digitada ou copiada.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="question-title">
+          Foto da DeckList 1
+        </div>
+        <input
+          type="file"
+          name="decklist_foto_1"
+          accept="image/*"
+        />
+        <div class="help-text">
+          Aceita imagem em JPG, PNG, WEBP ou outro formato de foto.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="question-title">
+          Foto da DeckList 2
+        </div>
+        <input
+          type="file"
+          name="decklist_foto_2"
+          accept="image/*"
+        />
+        <div class="help-text">
+          Campo opcional para uma segunda foto da DeckList.
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="question-title">
+          Foto da DeckList 3
+        </div>
+        <input
+          type="file"
+          name="decklist_foto_3"
+          accept="image/*"
+        />
+        <div class="help-text">
+          Campo opcional para uma terceira foto da DeckList.
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="submit">Enviar</button>
+        <button type="reset" class="clear-button">Limpar formulário</button>
+      </div>
+    </form>
+
+    <p class="footer-text">
+      O envio dos dados e anexos depende do serviço configurado no campo action do formulário.
+    </p>
+  </main>
+
+  <script>
+    const form = document.getElementById("formularioPokemon");
+
+    form.addEventListener("submit", function(event) {
+      const decklistTexto = form.querySelector('textarea[name="decklist_texto"]').value.trim();
+
+      const foto1 = form.querySelector('input[name="decklist_foto_1"]').files.length;
+      const foto2 = form.querySelector('input[name="decklist_foto_2"]').files.length;
+      const foto3 = form.querySelector('input[name="decklist_foto_3"]').files.length;
+
+      const totalFotos = foto1 + foto2 + foto3;
+
+      if (decklistTexto.length === 0 && totalFotos === 0) {
+        event.preventDefault();
+        alert("Informe a DeckList em texto ou anexe pelo menos uma foto.");
+        return;
+      }
+
+      if (decklistTexto.length > 0 && totalFotos > 0) {
+        event.preventDefault();
+        alert("Escolha apenas uma opção para a DeckList: texto colado ou fotos.");
+        return;
+      }
+
+      if (totalFotos > 3) {
+        event.preventDefault();
+        alert("Envie no máximo 3 fotos da DeckList.");
+        return;
+      }
+    });
+  </script>
+</body>
+</html>
