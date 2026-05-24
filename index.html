@@ -150,6 +150,18 @@
       color: #1f2937;
     }
 
+    .success-box {
+      background: #e8fff0;
+      border-left: 5px solid #22c55e;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #166534;
+      margin-bottom: 14px;
+      display: none;
+    }
+
     a {
       color: #2a3fa0;
       text-decoration: none;
@@ -236,22 +248,38 @@
 
     <section class="card header-card">
       <h1>Cadastro de Jogador Pokémon</h1>
+
       <p class="description">
-        Preencha os dados abaixo para realizar seu cadastro. Os campos marcados com asterisco são obrigatórios.
+        Preencha os dados abaixo para realizar seu cadastro.
+        Os campos marcados com asterisco são obrigatórios.
       </p>
-      <div class="required-note">* Indica uma pergunta obrigatória</div>
+
+      <div class="required-note">
+        * Indica uma pergunta obrigatória
+      </div>
     </section>
 
-    <form 
-      action="https://submify.vercel.app/rihappy.tangara@gmail.com"
+    <div class="success-box" id="mensagemSucesso">
+      Cadastro enviado com sucesso.
+    </div>
+
+    <form
+      action="https://formsubmit.co/rihappy.tangara@gmail.com"
       method="POST"
       enctype="multipart/form-data"
       id="formularioPokemon"
     >
+
+      <!-- Configurações FormSubmit -->
+      <input type="hidden" name="_subject" value="Novo Cadastro Pokémon">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="table">
+
       <section class="card">
         <div class="question-title">
           Nome Completo <span class="required">*</span>
         </div>
+
         <input
           type="text"
           name="nome_completo"
@@ -280,8 +308,10 @@
       <section class="card">
         <div class="info-box">
           <strong>Como criar uma Player ID:</strong><br />
+
           Caso ainda não tenha uma Player ID, acesse o tutorial:
-          <a 
+
+          <a
             href="https://copag.com.br/uploads/pokemon-jogadores/Como_vincular_um_player_ID_na_minha_conta_Pokemon.pdf"
             target="_blank"
             rel="noopener noreferrer"
@@ -295,6 +325,7 @@
         <div class="question-title">
           Data de Nascimento <span class="required">*</span>
         </div>
+
         <input
           type="date"
           name="data_nascimento"
@@ -306,6 +337,7 @@
         <div class="question-title">
           Telefone para contato <span class="required">*</span>
         </div>
+
         <input
           type="tel"
           name="telefone_contato"
@@ -315,114 +347,75 @@
       </section>
 
       <section class="card">
-        <h2>DeckList <span class="required">*</span></h2>
+        <h2>
+          DeckList <span class="required">*</span>
+        </h2>
+
         <p class="description">
-          Envie sua DeckList de uma das formas abaixo: colando o texto no campo indicado ou anexando até 3 fotos.
+          Envie sua DeckList de uma das formas abaixo:
+          colando o texto no campo indicado.
         </p>
       </section>
 
       <section class="card">
         <div class="warning-box">
-          Escolha apenas uma opção: <strong>texto colado</strong> ou <strong>fotos da DeckList</strong>.
-          Não envie texto e fotos ao mesmo tempo.
+          O FormSubmit não suporta upload de imagens/anexos.
+          Portanto, utilize apenas o envio em texto.
         </div>
       </section>
 
       <section class="card">
         <div class="question-title">
-          DeckList em texto
+          DeckList em texto <span class="required">*</span>
         </div>
+
         <textarea
           name="decklist_texto"
-          placeholder="Cole aqui sua DeckList, caso prefira enviar em texto."
+          placeholder="Cole aqui sua DeckList."
+          required
         ></textarea>
-        <div class="help-text">
-          Use este campo se quiser enviar a DeckList digitada ou copiada.
-        </div>
-      </section>
 
-      <section class="card">
-        <div class="question-title">
-          Foto da DeckList 1
-        </div>
-        <input
-          type="file"
-          name="decklist_foto_1"
-          accept="image/*"
-        />
         <div class="help-text">
-          Aceita imagem em JPG, PNG, WEBP ou outro formato de foto.
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="question-title">
-          Foto da DeckList 2
-        </div>
-        <input
-          type="file"
-          name="decklist_foto_2"
-          accept="image/*"
-        />
-        <div class="help-text">
-          Campo opcional para uma segunda foto da DeckList.
-        </div>
-      </section>
-
-      <section class="card">
-        <div class="question-title">
-          Foto da DeckList 3
-        </div>
-        <input
-          type="file"
-          name="decklist_foto_3"
-          accept="image/*"
-        />
-        <div class="help-text">
-          Campo opcional para uma terceira foto da DeckList.
+          Cole sua DeckList completa neste campo.
         </div>
       </section>
 
       <div class="actions">
-        <button type="submit">Enviar</button>
-        <button type="reset" class="clear-button">Limpar formulário</button>
+        <button type="submit">
+          Enviar
+        </button>
+
+        <button type="reset" class="clear-button">
+          Limpar formulário
+        </button>
       </div>
     </form>
 
     <p class="footer-text">
-      O envio dos dados e anexos depende do serviço configurado no campo action do formulário.
+      Formulário configurado utilizando FormSubmit.
     </p>
   </main>
 
   <script>
     const form = document.getElementById("formularioPokemon");
+    const mensagemSucesso = document.getElementById("mensagemSucesso");
 
     form.addEventListener("submit", function(event) {
-      const decklistTexto = form.querySelector('textarea[name="decklist_texto"]').value.trim();
 
-      const foto1 = form.querySelector('input[name="decklist_foto_1"]').files.length;
-      const foto2 = form.querySelector('input[name="decklist_foto_2"]').files.length;
-      const foto3 = form.querySelector('input[name="decklist_foto_3"]').files.length;
+      const decklistTexto = form
+        .querySelector('textarea[name="decklist_texto"]')
+        .value
+        .trim();
 
-      const totalFotos = foto1 + foto2 + foto3;
-
-      if (decklistTexto.length === 0 && totalFotos === 0) {
+      if (decklistTexto.length === 0) {
         event.preventDefault();
-        alert("Informe a DeckList em texto ou anexe pelo menos uma foto.");
+
+        alert("Informe sua DeckList em texto.");
+
         return;
       }
 
-      if (decklistTexto.length > 0 && totalFotos > 0) {
-        event.preventDefault();
-        alert("Escolha apenas uma opção para a DeckList: texto colado ou fotos.");
-        return;
-      }
-
-      if (totalFotos > 3) {
-        event.preventDefault();
-        alert("Envie no máximo 3 fotos da DeckList.");
-        return;
-      }
+      mensagemSucesso.style.display = "block";
     });
   </script>
 </body>
