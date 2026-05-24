@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Inscrição Confirmada | COPA DA LIGA - POKÉMON</title>
+
+  <style>
+    :root {
+      --pokemon-yellow: #ffcb05;
+      --pokemon-blue: #2a75bb;
+      --pokemon-dark-blue: #1b4f91;
+      --pokemon-red: #e3350d;
+      --pokemon-light: #f4f6fb;
+      --pokemon-dark: #1f2937;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--pokemon-dark);
+
+      background:
+        radial-gradient(circle at top left, rgba(255,203,5,0.35), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(227,53,13,0.18), transparent 30%),
+        linear-gradient(180deg, #fef9d7 0%, #ffffff 48%, #edf4ff 100%);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding: 28px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 920px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.97);
+      border-radius: 28px;
+      overflow: hidden;
+
+      border: 1px solid rgba(42,117,187,0.12);
+
+      box-shadow:
+        0 24px 60px rgba(42,117,187,0.18);
+    }
+
+    .top-bar {
+      height: 16px;
+
+      background:
+        linear-gradient(
+          90deg,
+          var(--pokemon-yellow) 0%,
+          var(--pokemon-blue) 50%,
+          var(--pokemon-red) 100%
+        );
+    }
+
+    .content {
+      padding: 48px 36px 40px;
+      text-align: center;
+    }
+
+    .pokemon-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+
+      background: #eef5ff;
+
+      border: 1px solid rgba(42,117,187,0.16);
+
+      border-radius: 999px;
+
+      padding: 10px 20px;
+
+      color: var(--pokemon-dark-blue);
+
+      font-weight: 700;
+
+      margin-bottom: 28px;
+    }
+
+    .pokeball-mini {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          to bottom,
+          var(--pokemon-red) 0 50%,
+          white 50% 100%
+        );
+
+      border: 2px solid #111827;
+
+      position: relative;
+    }
+
+    .pokeball-mini::after {
+      content: "";
+
+      position: absolute;
+
+      width: 6px;
+      height: 6px;
+
+      border-radius: 50%;
+
+      background: white;
+
+      border: 2px solid #111827;
+
+      top: 50%;
+      left: 50%;
+
+      transform: translate(-50%, -50%);
+    }
+
+    .success-circle {
+      width: 120px;
+      height: 120px;
+
+      margin: 0 auto 28px;
+
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          145deg,
+          var(--pokemon-blue),
+          var(--pokemon-dark-blue)
+        );
+
+      display: grid;
+      place-items: center;
+
+      position: relative;
+
+      box-shadow:
+        0 18px 38px rgba(42,117,187,0.28);
+    }
+
+    .success-circle::after {
+      content: "";
+
+      width: 46px;
+      height: 24px;
+
+      border-left: 8px solid white;
+      border-bottom: 8px solid white;
+
+      transform: rotate(-45deg);
+
+      margin-top: -6px;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+
+      font-size: clamp(34px, 5vw, 58px);
+
+      line-height: 1.05;
+
+      color: var(--pokemon-dark-blue);
+    }
+
+    .subtitle {
+      max-width: 700px;
+
+      margin: 0 auto 30px;
+
+      font-size: clamp(18px, 2.4vw, 24px);
+
+      line-height: 1.5;
+    }
+
+    .highlight {
+      color: var(--pokemon-red);
+      font-weight: 800;
+    }
+
+    .info-box {
+      max-width: 700px;
+
+      margin: 34px auto;
+
+      padding: 24px;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff8d8,
+          #ffffff
+        );
+
+      border: 2px dashed rgba(255,203,5,0.9);
+
+      text-align: left;
+    }
+
+    .info-box p {
+      margin: 10px 0;
+
+      font-size: 16px;
+
+      line-height: 1.6;
+    }
+
+    .info-box strong {
+      color: var(--pokemon-dark-blue);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+
+      margin-top: 30px;
+    }
+
+    .button {
+      display: inline-block;
+
+      padding: 15px 24px;
+
+      border-radius: 999px;
+
+      text-decoration: none;
+
+      font-weight: 800;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+    }
+
+    .button-primary {
+      background: var(--pokemon-blue);
+      color: white;
+
+      box-shadow:
+        0 12px 26px rgba(42,117,187,0.24);
+    }
+
+    .button-primary:hover {
+      background: var(--pokemon-dark-blue);
+    }
+
+    .button-secondary {
+      background: var(--pokemon-yellow);
+      color: #3b2d00;
+
+      box-shadow:
+        0 12px 26px rgba(255,203,5,0.28);
+    }
+
+    .pokeball-divider {
+      width: min(520px, 85%);
+      height: 12px;
+
+      margin: 36px auto 0;
+
+      border-radius: 999px;
+
+      background:
+        repeating-linear-gradient(
+          90deg,
+          var(--pokemon-red) 0 40px,
+          white 40px 80px,
+          var(--pokemon-blue) 80px 120px,
+          var(--pokemon-yellow) 120px 160px
+        );
+    }
+
+    .footer {
+      background: #f5f9ff;
+
+      padding: 22px 24px 28px;
+
+      text-align: center;
+
+      font-size: 14px;
+
+      color: #4b5563;
+    }
+
+    @media (max-width: 600px) {
+
+      body {
+        padding: 18px;
+      }
+
+      .content {
+        padding: 34px 22px 30px;
+      }
+
+      .info-box {
+        text-align: center;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <section class="card">
+
+      <div class="top-bar"></div>
+
+      <div class="content">
+
+        <div class="pokemon-badge">
+          <span class="pokeball-mini"></span>
+          COPA DA LIGA - POKÉMON
+        </div>
+
+        <div class="success-circle"></div>
+
+        <h1>Inscrição Confirmada!</h1>
+
+        <p class="subtitle">
+          Seu cadastro para a
+          <span class="highlight">COPA DA LIGA - POKÉMON</span>
+          foi enviado com sucesso.
+        </p>
+
+        <div class="info-box">
+
+          <p>
+            <strong>Treinador, atenção:</strong>
+            acompanhe os canais oficiais do evento para receber horários,
+            regulamento e informações da competição.
+          </p>
+
+          <p>
+            Chegue com antecedência ao local do torneio e leve sua DeckList
+            corretamente preenchida.
+          </p>
+
+          <p>
+            Boa sorte em sua jornada e prepare-se para a batalha.
+          </p>
+
+        </div>
+
+        <div class="actions">
+
+          <a
+            href="https://www.instagram.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="button button-primary"
+          >
+            Acompanhar novidades
+          </a>
+
+          <a
+            href="index.html"
+            class="button button-secondary"
+          >
+            Fazer nova inscrição
+          </a>
+
+        </div>
+
+        <div class="pokeball-divider"></div>
+
+      </div>
+
+      <footer class="footer">
+        Pokémon League Cup • Tangará da Serra - MT
+      </footer>
+
+    </section>
+
+  </main>
+
+</body>
+</html>
