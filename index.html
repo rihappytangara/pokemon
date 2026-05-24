@@ -438,20 +438,20 @@
     </div>
 
     <form
-      action="https://getform.io/f/4hewt0inafe"
+      action="https://submit-form.com/SEU_ID_FORMINIT"
       method="POST"
       enctype="multipart/form-data"
       id="formularioPokemon"
     >
 
-      <!-- Redirect -->
+      <!-- REDIRECT -->
       <input
         type="hidden"
         name="_redirect"
         value="https://rihappytangara.github.io/pokemon/confirmacao.html"
       >
 
-      <!-- Anti Spam -->
+      <!-- ANTI SPAM -->
       <input
         type="hidden"
         name="_gotcha"
@@ -466,7 +466,7 @@
 
         <input
           type="text"
-          name="nome_completo"
+          name="fi-sender-fullName"
           placeholder="Digite seu nome completo"
           required
         />
@@ -481,7 +481,7 @@
 
         <input
           type="text"
-          name="player_id"
+          name="fi-text-playerId"
           placeholder="ID oficial criada no site pokemon.com"
           required
         />
@@ -522,7 +522,7 @@
 
         <input
           type="date"
-          name="data_nascimento"
+          name="fi-date-birth"
           required
         />
 
@@ -536,7 +536,7 @@
 
         <input
           type="tel"
-          name="telefone_contato"
+          name="fi-phone-contact"
           placeholder="(00) 00000-0000"
           required
         />
@@ -575,7 +575,7 @@
         </div>
 
         <textarea
-          name="decklist_texto"
+          name="fi-text-message"
           placeholder="Cole aqui sua DeckList."
         ></textarea>
 
@@ -589,7 +589,7 @@
 
         <input
           type="file"
-          name="decklist_foto"
+          name="fi-file-decklist"
           accept="image/*"
         />
 
@@ -628,12 +628,12 @@
     form.addEventListener("submit", function(event) {
 
       const decklistTexto = form
-        .querySelector('textarea[name="decklist_texto"]')
+        .querySelector('textarea[name="fi-text-message"]')
         .value
         .trim();
 
       const foto = form
-        .querySelector('input[name="decklist_foto"]')
+        .querySelector('input[name="fi-file-decklist"]')
         .files.length;
 
       if (decklistTexto.length === 0 && foto === 0) {
