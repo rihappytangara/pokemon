@@ -3,6 +3,7 @@
   method="POST"
   enctype="multipart/form-data"
   id="formularioPokemon"
+  class="pokemon-form"
 >
 
   <!-- WEB3FORMS -->
@@ -12,14 +13,14 @@
     value="49f0349a-f4f0-462f-b434-6fd21ec0ec87"
   />
 
-  <!-- REDIRECIONAMENTO -->
+  <!-- REDIRECT -->
   <input 
     type="hidden" 
     name="redirect" 
     value="https://rihappytangara.github.io/pokemon/confirmacao.html"
   />
 
-  <!-- CONFIGURAÇÕES -->
+  <!-- CONFIG -->
   <input 
     type="hidden" 
     name="subject" 
@@ -32,7 +33,300 @@
     value="COPA DA LIGA - POKÉMON"
   />
 
+  <style>
+
+    :root {
+      --pokemon-yellow: #ffcb05;
+      --pokemon-blue: #2a75bb;
+      --pokemon-dark-blue: #1b4f91;
+      --pokemon-red: #e3350d;
+      --pokemon-light: #f4f6fb;
+      --pokemon-dark: #1f2937;
+      --white: #ffffff;
+    }
+
+    .pokemon-form {
+      max-width: 850px;
+      margin: 40px auto;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 22px;
+
+      border: 2px solid rgba(42,117,187,0.08);
+
+      box-shadow:
+        0 10px 30px rgba(42,117,187,0.08);
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 14px 36px rgba(42,117,187,0.14);
+    }
+
+    .question-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--pokemon-dark-blue);
+
+      margin-bottom: 18px;
+    }
+
+    .required {
+      color: var(--pokemon-red);
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"],
+    textarea {
+
+      width: 100%;
+
+      border: 2px solid #d7e3f4;
+
+      border-radius: 14px;
+
+      padding: 16px 18px;
+
+      font-size: 15px;
+
+      background: white;
+
+      transition:
+        border 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+
+      outline: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    textarea:focus {
+
+      border-color: var(--pokemon-blue);
+
+      box-shadow:
+        0 0 0 4px rgba(42,117,187,0.12);
+
+      transform: scale(1.01);
+    }
+
+    textarea {
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.5;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    input[type="file"] {
+
+      width: 100%;
+
+      border: 2px dashed var(--pokemon-blue);
+
+      background: #f4f9ff;
+
+      border-radius: 16px;
+
+      padding: 22px;
+
+      cursor: pointer;
+
+      transition:
+        background 0.2s ease,
+        border 0.2s ease;
+    }
+
+    input[type="file"]:hover {
+      background: #edf6ff;
+      border-color: var(--pokemon-dark-blue);
+    }
+
+    .help-text {
+
+      margin-top: 10px;
+
+      font-size: 13px;
+
+      color: #5f6368;
+
+      line-height: 1.5;
+    }
+
+    .info-box {
+
+      background:
+        linear-gradient(
+          135deg,
+          #eef5ff 0%,
+          #ffffff 100%
+        );
+
+      border-left: 6px solid var(--pokemon-blue);
+
+      border-radius: 16px;
+
+      padding: 18px 20px;
+
+      line-height: 1.6;
+
+      font-size: 15px;
+    }
+
+    .warning-box {
+
+      background:
+        linear-gradient(
+          135deg,
+          #fff9db 0%,
+          #fffef7 100%
+        );
+
+      border-left: 6px solid var(--pokemon-yellow);
+
+      border-radius: 16px;
+
+      padding: 18px 20px;
+
+      line-height: 1.6;
+
+      font-size: 15px;
+    }
+
+    .description {
+      line-height: 1.6;
+      color: #4b5563;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+
+      color: var(--pokemon-dark-blue);
+
+      font-size: 26px;
+    }
+
+    a {
+      color: var(--pokemon-blue);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .actions {
+
+      display: flex;
+
+      justify-content: center;
+
+      align-items: center;
+
+      gap: 20px;
+
+      margin-top: 34px;
+
+      flex-wrap: wrap;
+    }
+
+    button {
+
+      min-width: 220px;
+
+      border: none;
+
+      border-radius: 999px;
+
+      padding: 16px 26px;
+
+      font-size: 16px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    button[type="submit"] {
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--pokemon-blue),
+          var(--pokemon-dark-blue)
+        );
+
+      color: white;
+
+      box-shadow:
+        0 12px 28px rgba(42,117,187,0.25);
+    }
+
+    button[type="submit"]:hover {
+      opacity: 0.95;
+    }
+
+    .clear-button {
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--pokemon-yellow),
+          #ffe067
+        );
+
+      color: #3b2d00;
+
+      box-shadow:
+        0 12px 28px rgba(255,203,5,0.22);
+    }
+
+    .clear-button:hover {
+      opacity: 0.95;
+    }
+
+    @media (max-width: 700px) {
+
+      .card {
+        padding: 22px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+
+  </style>
+
   <section class="card">
+
     <div class="question-title">
       Nome Completo <span class="required">*</span>
     </div>
@@ -40,12 +334,14 @@
     <input
       type="text"
       name="nome_completo"
-      placeholder="Sua resposta"
+      placeholder="Digite seu nome completo"
       required
     />
+
   </section>
 
   <section class="card">
+
     <div class="question-title">
       Player ID <span class="required">*</span>
     </div>
@@ -60,25 +356,33 @@
     <div class="help-text">
       Informe sua Player ID oficial criada no site pokemon.com.
     </div>
+
   </section>
 
   <section class="card">
+
     <div class="info-box">
-      <strong>Como criar uma Player ID:</strong><br />
+
+      <strong>Como criar uma Player ID:</strong><br><br>
 
       Caso ainda não tenha uma Player ID, acesse o tutorial:
+
+      <br><br>
 
       <a 
         href="https://copag.com.br/uploads/pokemon-jogadores/Como_vincular_um_player_ID_na_minha_conta_Pokemon.pdf"
         target="_blank"
         rel="noopener noreferrer"
       >
-        Como vincular uma Player ID na minha conta Pokémon
+        Abrir tutorial oficial Pokémon
       </a>
+
     </div>
+
   </section>
 
   <section class="card">
+
     <div class="question-title">
       Data de Nascimento <span class="required">*</span>
     </div>
@@ -88,9 +392,11 @@
       name="data_nascimento"
       required
     />
+
   </section>
 
   <section class="card">
+
     <div class="question-title">
       Telefone para contato <span class="required">*</span>
     </div>
@@ -98,12 +404,14 @@
     <input
       type="tel"
       name="telefone_contato"
-      placeholder="Sua resposta"
+      placeholder="(00) 00000-0000"
       required
     />
+
   </section>
 
   <section class="card">
+
     <h2>
       DeckList <span class="required">*</span>
     </h2>
@@ -112,32 +420,40 @@
       Envie sua DeckList de uma das formas abaixo:
       colando o texto no campo indicado ou anexando até 3 fotos.
     </p>
+
   </section>
 
   <section class="card">
+
     <div class="warning-box">
+
       Escolha apenas uma opção:
       <strong>texto colado</strong> ou
       <strong>fotos da DeckList</strong>.
+
     </div>
+
   </section>
 
   <section class="card">
+
     <div class="question-title">
       DeckList em texto
     </div>
 
     <textarea
       name="decklist_texto"
-      placeholder="Cole aqui sua DeckList, caso prefira enviar em texto."
+      placeholder="Cole aqui sua DeckList."
     ></textarea>
 
     <div class="help-text">
-      Use este campo se quiser enviar a DeckList digitada ou copiada.
+      Utilize este campo caso queira enviar a DeckList em texto.
     </div>
+
   </section>
 
   <section class="card">
+
     <div class="question-title">
       Foto da DeckList 1
     </div>
@@ -149,11 +465,13 @@
     />
 
     <div class="help-text">
-      Aceita imagem em JPG, PNG, WEBP ou outro formato de foto.
+      JPG, PNG, WEBP e outros formatos compatíveis.
     </div>
+
   </section>
 
   <section class="card">
+
     <div class="question-title">
       Foto da DeckList 2
     </div>
@@ -165,11 +483,13 @@
     />
 
     <div class="help-text">
-      Campo opcional para uma segunda foto da DeckList.
+      Campo opcional.
     </div>
+
   </section>
 
   <section class="card">
+
     <div class="question-title">
       Foto da DeckList 3
     </div>
@@ -181,24 +501,27 @@
     />
 
     <div class="help-text">
-      Campo opcional para uma terceira foto da DeckList.
+      Campo opcional.
     </div>
+
   </section>
 
   <div class="actions">
 
     <button type="submit">
-      Enviar
+      ⚡ Enviar Inscrição
     </button>
 
     <button type="reset" class="clear-button">
-      Limpar formulário
+      Limpar Formulário
     </button>
 
   </div>
+
 </form>
 
 <script>
+
   const form = document.getElementById("formularioPokemon");
 
   form.addEventListener("submit", function(event) {
@@ -227,7 +550,7 @@
       event.preventDefault();
 
       alert(
-        "Informe a DeckList em texto ou anexe pelo menos uma foto."
+        "Informe a DeckList em texto ou envie pelo menos uma foto."
       );
 
       return;
@@ -238,7 +561,7 @@
       event.preventDefault();
 
       alert(
-        "Escolha apenas uma opção para a DeckList: texto colado ou fotos."
+        "Escolha apenas uma opção para envio da DeckList."
       );
 
       return;
@@ -249,10 +572,11 @@
       event.preventDefault();
 
       alert(
-        "Envie no máximo 3 fotos da DeckList."
+        "Envie no máximo 3 fotos."
       );
 
       return;
     }
   });
+
 </script>
