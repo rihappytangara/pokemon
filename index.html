@@ -444,14 +444,12 @@
       id="formularioPokemon"
     >
 
-      <!-- REDIRECT -->
       <input
         type="hidden"
         name="_redirect"
         value="https://rihappytangara.github.io/pokemon/confirmacao.html"
       >
 
-      <!-- ANTI SPAM -->
       <input
         type="hidden"
         name="_gotcha"
@@ -536,10 +534,17 @@
 
         <input
           type="tel"
+          id="telefone"
           name="fi-phone-contact"
-          placeholder="+55 (00) 00000-0000"
+          value="+55"
+          placeholder="+5511999999999"
+          maxlength="14"
           required
         />
+
+        <div class="help-text">
+          Digite apenas números após o +55.
+        </div>
 
       </section>
 
@@ -625,6 +630,21 @@
 
     const form = document.getElementById("formularioPokemon");
 
+    const telefoneInput = document.getElementById("telefone");
+
+    telefoneInput.addEventListener("input", function () {
+
+      let numeros = this.value.replace(/\D/g, "");
+
+      if (!numeros.startsWith("55")) {
+        numeros = "55" + numeros;
+      }
+
+      numeros = numeros.substring(0, 13);
+
+      this.value = "+" + numeros;
+    });
+
     form.addEventListener("submit", function(event) {
 
       const decklistTexto = form
@@ -635,6 +655,23 @@
       const foto = form
         .querySelector('input[name="fi-file-decklist"]')
         .files.length;
+
+      const telefone = telefoneInput.value;
+
+      const regexTelefone = /^\+55\d{10,11}$/;
+
+      if (!regexTelefone.test(telefone)) {
+
+        event.preventDefault();
+
+        alert(
+          "Digite um telefone válido no formato internacional: +5511999999999"
+        );
+
+        telefoneInput.focus();
+
+        return;
+      }
 
       if (decklistTexto.length === 0 && foto === 0) {
 
@@ -657,6 +694,14 @@
 
         return;
       }
+
+    });
+
+    form.addEventListener("reset", function() {
+
+      setTimeout(() => {
+        telefoneInput.value = "+55";
+      }, 0);
 
     });
 
