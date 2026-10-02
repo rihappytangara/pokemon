@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2a75bb">
+<title>Cadastro de Torneios Pokémon — Ri Happy Tangará</title>
+<style>
+:root{--yellow:#ffcb05;--blue:#2a75bb;--darkblue:#1b4f91;--red:#e3350d;--dark:#1f2937;--border:#d7e3f4;--muted:#5f6368}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--dark);background:radial-gradient(circle at top left,rgba(255,203,5,.25),transparent 28%),radial-gradient(circle at bottom right,rgba(227,53,13,.14),transparent 30%),linear-gradient(180deg,#fdf7d7 0%,#fff 52%,#edf4ff 100%)}
+.page{width:100%;max-width:900px;margin:0 auto;padding:28px 16px 56px}.top-header{text-align:center;margin-bottom:24px}.badge{display:inline-block;padding:10px 20px;border-radius:999px;background:linear-gradient(135deg,var(--yellow),#ffe067);color:#3b2d00;font-size:14px;font-weight:800;margin-bottom:14px}.title{margin:0;font-size:clamp(32px,6vw,54px);line-height:1.05;color:var(--darkblue)}.subtitle{max-width:720px;margin:14px auto 0;font-size:16px;line-height:1.55;color:#4b5563}
+.card{background:linear-gradient(180deg,#fff,#fbfcff);border-radius:20px;padding:24px;margin-bottom:18px;border:2px solid rgba(42,117,187,.08);box-shadow:0 8px 26px rgba(42,117,187,.08)}.question{font-size:18px;font-weight:800;margin-bottom:12px;color:var(--darkblue)}.required{color:var(--red)}label{display:block;font-weight:700;margin-bottom:8px}
+input[type=text],input[type=number],select,textarea{width:100%;border:2px solid var(--border);border-radius:14px;padding:14px 16px;font-size:15px;background:#fff;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(42,117,187,.12)}textarea{min-height:220px;resize:vertical;line-height:1.55;font-family:Arial,Helvetica,sans-serif}.help{margin-top:8px;font-size:13px;line-height:1.45;color:var(--muted)}
+.events{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.event{position:relative}.event input{position:absolute;opacity:0;pointer-events:none}.event label{height:100%;padding:18px;border:2px solid var(--border);border-radius:16px;cursor:pointer;background:#fff;transition:.2s ease}.event label:hover{border-color:var(--blue);transform:translateY(-1px)}.event input:checked+label{border-color:var(--blue);background:#eef6ff;box-shadow:0 0 0 3px rgba(42,117,187,.12)}.event-name{display:block;color:var(--darkblue);font-size:17px;font-weight:800;margin-bottom:8px}.event-info{display:block;font-size:14px;line-height:1.55;color:#4b5563}
+.info{background:linear-gradient(135deg,#eef5ff,#fff);border-left:6px solid var(--blue);border-radius:14px;padding:16px 18px;font-size:14px;line-height:1.6}.warning{background:linear-gradient(135deg,#fff9db,#fffef7);border-left:6px solid var(--yellow);border-radius:14px;padding:16px 18px;font-size:14px;line-height:1.6}.deck-choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}.choice{border:2px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;background:#fff;font-weight:700;text-align:center}.choice.active{border-color:var(--blue);background:#eef6ff}.deck-panel{display:none}.deck-panel.active{display:block}input[type=file]{width:100%;border:2px dashed var(--blue);background:#f4f9ff;border-radius:14px;padding:20px;cursor:pointer}.file-name{margin-top:9px;font-size:13px;color:var(--darkblue);font-weight:700;word-break:break-word}.actions{display:flex;justify-content:center;gap:14px;margin-top:28px;flex-wrap:wrap}button{min-width:220px;border:0;border-radius:999px;padding:16px 24px;font-size:16px;font-weight:800;cursor:pointer}.submit{background:linear-gradient(135deg,var(--blue),var(--darkblue));color:#fff;box-shadow:0 10px 24px rgba(42,117,187,.22)}.reset{background:linear-gradient(135deg,var(--yellow),#ffe067);color:#3b2d00}button:disabled{opacity:.65;cursor:wait}.store{text-align:center;margin-top:26px;color:#5f6368;font-size:13px;line-height:1.5}a{color:var(--blue);font-weight:700;text-decoration:none}
+@media(max-width:680px){.page{padding:22px 12px 42px}.card{padding:19px}.events,.deck-choice{grid-template-columns:1fr}.actions{flex-direction:column}button{width:100%}}
+</style>
+</head>
+<body>
+<main class="page">
+<header class="top-header"><div class="badge">⚡ RI HAPPY TANGARÁ • POKÉMON TCG</div><h1 class="title">Cadastro de Jogador</h1><p class="subtitle">Faça seu cadastro para participar dos torneios de outubro da Liga Pokémon da Ri Happy Tangará.</p></header>
+<form action="https://forminit.com/f/4hewt0inafe" method="POST" enctype="multipart/form-data" id="formularioPokemon">
+<input type="hidden" name="_redirect" value="https://rihappytangara.github.io/pokemon/confirmacao.html"><input type="hidden" name="_gotcha" style="display:none!important">
+<section class="card"><div class="question">1. Escolha o torneio <span class="required">*</span></div><div class="events">
+<div class="event"><input type="radio" id="liga-outubro" name="fi-text-torneio" value="Desafio da Liga - Outubro | 12/10/2026 às 14h | R$ 20 | Standard" required><label for="liga-outubro"><span class="event-name">🏆 Desafio da Liga — Outubro</span><span class="event-info">📅 12/10/2026 • 14h<br>💰 Inscrição: R$ 20<br>🎴 Formato: Standard</span></label></div>
+<div class="event"><input type="radio" id="reinado-delta" name="fi-text-torneio" value="Pré-Release Reinado Delta | 24/10/2026 às 13h | R$ 149,99 | Limitado" required><label for="reinado-delta"><span class="event-name">🔥 Pré-Release — Reinado Delta</span><span class="event-info">📅 24/10/2026 • 13h<br>💰 Inscrição: R$ 149,99<br>🎴 Formato: Limitado</span></label></div>
+</div><div class="help">Se quiser participar dos dois eventos, faça um cadastro separado para cada torneio.</div>
+<div class="info prerelease-notice" id="prereleaseNotice" style="display:none;margin-top:14px"><strong>Pré-Release Reinado Delta:</strong><br>A Decklist não é necessária para este evento. O campo será desativado automaticamente.</div></section>
+<section class="card"><div class="question">2. Dados do jogador</div>
+<label for="nome">Nome <span class="required">*</span></label><input type="text" id="nome" name="fi-text-nome" placeholder="Digite seu nome" autocomplete="given-name" required><br><br>
+<label for="telefone">Telefone / WhatsApp <span class="required">*</span></label><input type="tel" id="telefone" name="fi-text-telefone" placeholder="(65) 99999-9999" inputmode="tel" autocomplete="tel" required><div class="help-text">Informe um número de telefone/WhatsApp para contato sobre o torneio.</div><br><br>
+<label for="sobrenome">Sobrenome <span class="required">*</span></label><input type="text" id="sobrenome" name="fi-text-sobrenome" placeholder="Digite seu sobrenome" autocomplete="family-name" required><br><br>
+<label for="playerId">Player ID <span class="required">*</span></label><input type="text" id="playerId" name="fi-text-playerId" placeholder="Ex.: 123456789" inputmode="numeric" autocomplete="off" required><div class="help">Informe sua Player ID oficial da Pokémon.</div><br>
+<div class="info"><strong>Ainda não possui Player ID?</strong><br>Consulte o tutorial oficial:<br><br><a href="https://copag.com.br/uploads/pokemon-jogadores/Como_vincular_um_player_ID_na_minha_conta_Pokemon.pdf" target="_blank" rel="noopener noreferrer">Abrir tutorial de Player ID</a></div><br>
+<label for="anoNascimento">Ano de nascimento <span class="required">*</span></label><input type="number" id="anoNascimento" name="fi-text-anoNascimento" min="1900" max="2026" placeholder="Ex.: 2012" inputmode="numeric" required></section>
+<section class="card" id="deckSection"><div class="question">3. Decklist <span class="required">*</span></div><div class="warning">Envie sua Decklist de <strong>uma</strong> das formas abaixo: escrevendo/colando o conteúdo ou enviando uma foto/print legível.</div>
+<div class="deck-choice"><button type="button" class="choice active" id="choiceText">✍️ Escrever / colar Decklist</button><button type="button" class="choice" id="choiceFile">📷 Enviar foto / print</button></div>
+<div class="deck-panel active" id="deckTexto"><label for="decklistTexto">Decklist em texto</label><textarea id="decklistTexto" name="fi-text-decklist" placeholder="Cole ou digite sua Decklist aqui.
+
+Exemplo:
+Pokémon: 12
+4 ...
+3 ...
+
+Treinadores: 35
+...
+
+Energias: 13
+..."></textarea><div class="help">Escreva a lista completa do baralho de forma legível.</div></div>
+<div class="deck-panel" id="deckArquivo"><label for="decklistArquivo">Foto ou print da Decklist</label><input type="file" id="decklistArquivo" name="fi-file-decklist" accept="image/jpeg,image/png,image/webp" capture="environment"><div class="help">Formatos: JPG, PNG ou WEBP. Prefira uma imagem nítida e completa. Limite recomendado: até 25 MB.</div><div class="file-name" id="fileName"></div></div></section>
+<div class="actions"><button type="submit" class="submit" id="submitButton">⚡ Enviar Cadastro</button><button type="reset" class="reset">Limpar Formulário</button></div>
+</form><div class="store"><strong>Ri Happy Tangará da Serra</strong><br>Av. Brasil, 1067-S — Jardim Rio Preto<br>Tangará da Serra — MT</div>
+</main>
+<script>
+const form=document.getElementById('formularioPokemon'), deckTexto=document.getElementById('deckTexto'), deckArquivo=document.getElementById('deckArquivo'), choiceText=document.getElementById('choiceText'), choiceFile=document.getElementById('choiceFile'), decklistTexto=document.getElementById('decklistTexto'), decklistArquivo=document.getElementById('decklistArquivo'), fileName=document.getElementById('fileName'), telefone=document.getElementById('telefone'), ano=document.getElementById('anoNascimento'), player=document.getElementById('playerId'), submit=document.getElementById('submitButton'), deckSection=document.getElementById('deckSection'), prereleaseNotice=document.getElementById('prereleaseNotice'), torneioRadios=document.querySelectorAll('input[name="fi-text-torneio"]');
+function atualizarPorTorneio(){
+const selecionado=document.querySelector('input[name="fi-text-torneio"]:checked');
+const prerelease=selecionado&&selecionado.value.includes('Pré-Release Reinado Delta');
+prereleaseNotice.style.display=prerelease?'block':'none';
+deckSection.style.display=prerelease?'none':'block';
+decklistTexto.disabled=!!prerelease;
+decklistArquivo.disabled=!!prerelease;
+if(prerelease){
+decklistTexto.required=false;
+decklistArquivo.required=false;
+decklistTexto.value='';
+decklistArquivo.value='';
+fileName.textContent='';
+}else{
+decklistTexto.disabled=false;
+decklistArquivo.disabled=false;
+mostrarDeck('texto');
+}
+}
+torneioRadios.forEach(r=>r.addEventListener('change',atualizarPorTorneio));
+function mostrarDeck(tipo){const texto=tipo==='texto';deckTexto.classList.toggle('active',texto);deckArquivo.classList.toggle('active',!texto);choiceText.classList.toggle('active',texto);choiceFile.classList.toggle('active',!texto);decklistTexto.required=texto;decklistArquivo.required=!texto;if(texto){decklistArquivo.value='';fileName.textContent=''}else{decklistTexto.value=''}}
+choiceText.addEventListener('click',()=>mostrarDeck('texto')); choiceFile.addEventListener('click',()=>mostrarDeck('arquivo'));
+decklistArquivo.addEventListener('change',function(){if(!this.files.length){fileName.textContent='';return}const f=this.files[0],max=25*1024*1024,allowed=['image/jpeg','image/png','image/webp'];if(f.size>max){alert('A imagem deve ter no máximo 25 MB.');this.value='';fileName.textContent='';return}if(!allowed.includes(f.type)){alert('Envie uma imagem JPG, PNG ou WEBP.');this.value='';fileName.textContent='';return}fileName.textContent='Arquivo selecionado: '+f.name+' ('+(f.size/1024/1024).toFixed(2)+' MB)'});
+telefone.addEventListener('input',function(){let v=this.value.replace(/\D/g,'').slice(0,11);if(v.length<=10){v=v.replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2')}else{v=v.replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2')}this.value=v});
+player.addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,20)}); ano.addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,4)});
+form.addEventListener('submit',function(e){const y=Number(ano.value),current=new Date().getFullYear();if(!/^\d{4}$/.test(ano.value)||y<1900||y>current){e.preventDefault();alert('Informe um ano de nascimento válido.');ano.focus();return}if(!player.value.trim()){e.preventDefault();alert('Informe a Player ID.');player.focus();return}const selecionado=document.querySelector('input[name="fi-text-torneio"]:checked'),prerelease=selecionado&&selecionado.value.includes('Pré-Release Reinado Delta');if(!prerelease&&deckTexto.classList.contains('active')&&!decklistTexto.value.trim()){e.preventDefault();alert('Digite a Decklist antes de enviar.');decklistTexto.focus();return}if(!prerelease&&deckArquivo.classList.contains('active')&&!decklistArquivo.files.length){e.preventDefault();alert('Selecione uma foto ou print da Decklist.');decklistArquivo.focus();return}submit.disabled=true;submit.textContent='Enviando...'});
+form.addEventListener('reset',function(){setTimeout(()=>{mostrarDeck('texto');decklistTexto.disabled=false;decklistArquivo.disabled=false;deckSection.style.display='block';prereleaseNotice.style.display='none';fileName.textContent='';submit.disabled=false;submit.textContent='⚡ Enviar Cadastro';atualizarPorTorneio()},0)}); atualizarPorTorneio();
+</script>
+</body>
+</html>
