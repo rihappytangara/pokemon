@@ -45,8 +45,8 @@
 <section class="card step">
 <div class="step-kicker">Etapa 2</div><h2 class="step-title">Sobre a demanda</h2><p class="step-help">Quanto mais claro o briefing, menor a necessidade de ajustes depois da aprovação.</p>
 <div class="field"><label for="campanha">Nome da campanha ou ação <span class="req">*</span></label><input id="campanha" type="text" name="fi-text-nome_campanha" placeholder="Ex.: Feirão Chevrolet Outubro" required></div>
-<div class="field"><label for="descricao">O que você precisa do Marketing? <span class="req">*</span></label><textarea id="descricao" name="fi-textarea-descricao_demanda" placeholder="Explique o que precisa ser produzido e o contexto da solicitação." required></textarea></div>
-<div class="field"><label for="objetivo">Qual é o objetivo desta ação? <span class="req">*</span></label><textarea id="objetivo" name="fi-textarea-objetivo" placeholder="Ex.: gerar leads, aumentar fluxo na loja, divulgar condição comercial..." required></textarea></div>
+<div class="field"><label for="descricao">O que você precisa do Marketing? <span class="req">*</span></label><textarea id="descricao" name="fi-text-descricao_demanda" placeholder="Explique o que precisa ser produzido e o contexto da solicitação." required></textarea></div>
+<div class="field"><label for="objetivo">Qual é o objetivo desta ação? <span class="req">*</span></label><textarea id="objetivo" name="fi-text-objetivo" placeholder="Ex.: gerar leads, aumentar fluxo na loja, divulgar condição comercial..." required></textarea></div>
 <div class="grid">
 <div class="field"><label for="dataEntrega">Data desejada para entrega <span class="req">*</span></label><input id="dataEntrega" type="date" name="fi-date-data_entrega" required></div>
 <div class="field"><label>Prioridade <span class="req">*</span></label><div class="choices">
@@ -106,8 +106,8 @@
 <div class="field"><label for="financiado">Valor financiado</label><input id="financiado" type="text" name="fi-text-valor_financiado" placeholder="R$ 0,00" inputmode="decimal"></div>
 <div class="field"><label for="financeira">Banco / financeira</label><input id="financeira" type="text" name="fi-text-instituicao_financeira" placeholder="Ex.: GM Financial"></div>
 <div class="field"><label for="validadeOferta">Validade da oferta</label><input id="validadeOferta" type="date" name="fi-date-validade_oferta"></div>
-<div class="field full"><label for="juridico">Texto jurídico/comercial obrigatório</label><textarea id="juridico" name="fi-textarea-texto_juridico" placeholder="Cole aqui o texto/condição que deverá constar na peça."></textarea></div>
-<div class="field full"><label for="obsOferta">Observações sobre a oferta</label><textarea id="obsOferta" name="fi-textarea-observacoes_oferta" placeholder="Inclua qualquer condição adicional relevante."></textarea></div>
+<div class="field full"><label for="juridico">Texto jurídico/comercial obrigatório</label><textarea id="juridico" name="fi-text-texto_juridico" placeholder="Cole aqui o texto/condição que deverá constar na peça."></textarea></div>
+<div class="field full"><label for="obsOferta">Observações sobre a oferta</label><textarea id="obsOferta" name="fi-text-observacoes_oferta" placeholder="Inclua qualquer condição adicional relevante."></textarea></div>
 </div></div>
 </section>
 
@@ -127,12 +127,12 @@
 <div class="choice"><input type="checkbox" name="fi-checkbox-canais_divulgacao[]" value="Material impresso" id="c11"><label for="c11">Material impresso</label></div>
 <div class="choice"><input type="checkbox" name="fi-checkbox-canais_divulgacao[]" value="Outro" id="c12"><label for="c12">Outro</label></div>
 </div></div>
-<div class="field"><label for="arquivo">Arquivos de referência</label><div class="filebox"><input id="arquivo" type="file" name="fi-file-referencias" multiple accept="image/jpeg,image/png,image/webp,application/pdf,video/mp4"><div class="help">Pode anexar imagens, PDFs ou vídeos.</div></div></div>
+<div class="field"><label for="arquivo">Arquivos de referência</label><div class="filebox"><input id="arquivo" type="file" name="fi-file-referencias[]" multiple accept="image/jpeg,image/png,image/webp,application/pdf,video/mp4"><div class="help">Pode anexar imagens, PDFs ou vídeos.</div></div></div>
 <div class="grid">
 <div class="field"><label for="link">Link de referência</label><input id="link" type="url" name="fi-url-link_referencia" placeholder="https://..."></div>
 <div class="field"><label for="descricaoRef">Explique a referência</label><input id="descricaoRef" type="text" name="fi-text-descricao_referencia" placeholder="O que deve ser aproveitado?"></div>
 </div>
-<div class="field"><label for="obs">Alguma informação adicional?</label><textarea id="obs" name="fi-textarea-observacoes_finais" placeholder="Outras informações que possam ajudar o Marketing."></textarea></div>
+<div class="field"><label for="obs">Alguma informação adicional?</label><textarea id="obs" name="fi-text-observacoes_finais" placeholder="Outras informações que possam ajudar o Marketing."></textarea></div>
 </section>
 
 <section class="card step">
