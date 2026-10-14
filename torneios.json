@@ -1,0 +1,17 @@
+{
+  "titulo": "Inscrição de Torneios Pokémon",
+  "subtitulo": "Ri Happy Tangará da Serra",
+  "torneios": [
+    {
+      "id": "reinado-delta-2026-10-24",
+      "nome": "Pré-Release — Reinado Delta",
+      "data": "24/10/2026",
+      "horario": "13h",
+      "valor": "R$ 149,99",
+      "formato": "Limitado",
+      "status": "aberto",
+      "decklistObrigatoria": false,
+      "observacao": "Pré-Release: confirme com a organização se é necessário enviar uma decklist antes do evento."
+    }
+  ]
+}
