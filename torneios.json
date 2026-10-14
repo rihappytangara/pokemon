@@ -11,7 +11,8 @@
       "formato": "Limitado",
       "status": "aberto",
       "decklistObrigatoria": false,
-      "observacao": "Pré-Release: confirme com a organização se é necessário enviar uma decklist antes do evento."
+      "observacao": "Pré-Release: o baralho é montado no evento; não é necessário enviar decklist.",
+      "premiacao": []
     }
   ]
 }
