@@ -13,6 +13,22 @@
       "decklistObrigatoria": false,
       "observacao": "Pré-Release: o baralho é montado no evento; não é necessário enviar decklist.",
       "premiacao": []
+    },
+    {
+      "id": "copa-da-liga-2026-12-05",
+      "nome": "Copa da Liga",
+      "data": "05/12/2026",
+      "horario": "13h",
+      "valor": "R$ 50,00",
+      "formato": "Expandido",
+      "status": "aberto",
+      "decklistObrigatoria": true,
+      "observacao": "",
+      "premiacao": [
+        "Troféus para os 1º colocados de cada categoria",
+        "Playmat para os 1º colocados de cada categoria",
+        "Boosters para o top 5"
+      ]
     }
   ]
 }
