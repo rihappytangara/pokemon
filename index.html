@@ -107,8 +107,6 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 </form>
 <footer><strong>Ri Happy Tangará da Serra</strong><br>Av. Brasil, 1067-S — Jardim Rio Preto • Tangará da Serra — MT</footer>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase-config.js"></script>
 <script>
 const form=document.getElementById('registrationForm');
 const tournament=document.getElementById('tournament');
@@ -135,19 +133,9 @@ function renderTournament(){
 }
 async function loadTournaments(){
   try{
-    let data;
-    const cfg=window.SUPABASE_CONFIG||{};
-    const useDatabase=cfg.url&&cfg.anonKey&&!cfg.anonKey.includes('COLE_AQUI')&&window.supabase;
-    if(useDatabase){
-      const db=window.supabase.createClient(cfg.url,cfg.anonKey);
-      const {data:rows,error}=await db.from('torneios').select('*').eq('status','aberto');
-      if(error)throw new Error('Erro ao carregar torneios do banco: '+error.message);
-      data={titulo:'Inscrição de Torneios Pokémon',subtitulo:'Ri Happy Tangará da Serra',torneios:rows||[]};
-    }else{
-      const response=await fetch('./torneios.json',{cache:'no-store'});
-      if(!response.ok)throw new Error('Não foi possível carregar torneios.json');
-      data=await response.json();
-    }
+    const response=await fetch('./torneios.json',{cache:'no-store'});
+    if(!response.ok)throw new Error('Não foi possível carregar torneios.json');
+    const data=await response.json();
     document.getElementById('pageTitle').textContent=data.titulo||'Inscrição de Torneios Pokémon';
     document.getElementById('pageSubtitle').textContent=data.subtitulo||'Ri Happy Tangará da Serra';
     tournaments=(data.torneios||[]).filter(t=>t.status==='aberto');
@@ -168,7 +156,7 @@ async function loadTournaments(){
   }catch(error){
     tournament.innerHTML='<option value="">Não foi possível carregar os torneios</option>';
     tournament.disabled=true;submitButton.disabled=true;
-    tournamentInfo.textContent=error.message||'Verifique a configuração da lista de torneios.';
+    tournamentInfo.textContent='Verifique se o arquivo torneios.json existe na mesma pasta desta página.';
     statusEl.textContent='O formulário não pode ser enviado porque a lista de torneios não foi carregada.';
   }
 }
