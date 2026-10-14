@@ -76,7 +76,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 </div>
 </section>
 
-<section class="panel">
+<section class="panel" id="deckSection" hidden>
 <h2>3. Construtor de decks</h2>
 <div class="notice"><strong>Como usar:</strong> monte ou abra sua lista no Limitless. Ao terminar, copie/exporte o texto da decklist e cole no campo abaixo. Por uma restrição de segurança do navegador, esta página não consegue ler automaticamente o conteúdo do iframe de outro domínio.</div>
 <div class="actions">
@@ -112,6 +112,7 @@ const form=document.getElementById('registrationForm');
 const tournament=document.getElementById('tournament');
 const tournamentInfo=document.getElementById('tournamentInfo');
 const decklist=document.getElementById('decklist');
+const deckSection=document.getElementById('deckSection');
 const deckRequiredMark=document.getElementById('deckRequiredMark');
 const deckHelp=document.getElementById('deckHelp');
 const statusEl=document.getElementById('formStatus');
@@ -120,13 +121,14 @@ let tournaments=[];
 
 function renderTournament(){
   const selected=tournaments.find(t=>t.id===tournament.value);
-  if(!selected){tournamentInfo.textContent='Selecione um torneio para ver os detalhes.';decklist.required=false;deckRequiredMark.textContent='';return;}
+  if(!selected){tournamentInfo.textContent='Selecione um torneio para ver os detalhes.';decklist.required=false;deckRequiredMark.textContent='';deckSection.hidden=true;return;}
   const parts=[selected.nome,selected.data,selected.horario,selected.valor,selected.formato].filter(Boolean);
   const prizeText=Array.isArray(selected.premiacao)&&selected.premiacao.length
     ? '\nPremiação: '+selected.premiacao.join(' • ')
     : (typeof selected.premiacao==='string'&&selected.premiacao.trim()?'\nPremiação: '+selected.premiacao:'');
   tournamentInfo.textContent=parts.join(' • ')+(prizeText||'')+(selected.observacao?'\n'+selected.observacao:'');
   decklist.required=selected.decklistObrigatoria===true;
+  deckSection.hidden=!decklist.required;
   deckRequiredMark.textContent=decklist.required?'*':'(quando aplicável)';
   deckHelp.textContent=decklist.required?'A decklist é obrigatória para este torneio.':'A decklist é opcional para o torneio selecionado.';
   decklist.placeholder=decklist.required?'Cole aqui sua decklist completa. Campo obrigatório para este torneio.':'Cole aqui a decklist exportada pelo Limitless, se aplicável.';
