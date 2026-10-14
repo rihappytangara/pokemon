@@ -46,7 +46,7 @@ insert into public.torneios
 (id,nome,data,horario,valor,formato,status,"decklistObrigatoria",observacao,premiacao)
 values
 ('reinado-delta-2026-10-24','Pré-Release — Reinado Delta','24/10/2026','13h','R$ 149,99','Limitado','aberto',false,'Pré-Release: o baralho é montado no evento; não é necessário enviar decklist.','[]'::jsonb),
-('copa-da-liga-2026-12-05','Copa da Liga','05/12/2026','13h','R$ 50,00','Expandido','aberto',true,'','["Troféus para os 1º colocados de cada categoria","Playmat para os 1º colocados de cada categoria","Boosters para o top 5"]'::jsonb)
+('copa-da-liga-2026-12-05','Copa da Liga','05/12/2026','13h','R$ 50,00','Expandido','aberto',true,'','["Troféus para os 1º colocados da categoria","Playmat para os 1º colocados da categoria","Boosters para o top 5"]'::jsonb)
 on conflict (id) do update set
   nome=excluded.nome,data=excluded.data,horario=excluded.horario,valor=excluded.valor,
   formato=excluded.formato,status=excluded.status,
