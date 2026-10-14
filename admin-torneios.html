@@ -2,68 +2,83 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#2a75bb"><title>Administração de Torneios — Ri Happy Tangará</title>
+<meta name="theme-color" content="#2a75bb"><title>Editor de Torneios — Ri Happy Tangará</title>
 <style>
-:root{--blue:#2a75bb;--navy:#1b4f91;--line:#dbe5f1;--ink:#1f2937;--muted:#64748b;--bg:#f3f7fc}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Arial,sans-serif}main{max-width:1050px;margin:auto;padding:24px 14px 48px}
+:root{--blue:#2a75bb;--navy:#1b4f91;--line:#dbe5f1;--ink:#1f2937;--muted:#64748b;--bg:#f3f7fc;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Arial,sans-serif}main{max-width:1080px;margin:auto;padding:24px 14px 48px}
 header,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 5px 18px #1b4f9110}
 h1{margin:0 0 6px;color:var(--navy);font-size:clamp(25px,4vw,36px)}h2{margin:0 0 16px;color:var(--navy);font-size:21px}
 p{margin:7px 0}.muted{color:var(--muted);font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{margin-bottom:13px}
-label{display:block;font-weight:700;margin-bottom:6px}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:110px;resize:vertical}
-button{border:0;border-radius:9px;padding:12px 16px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}button.secondary{background:#edf4ff;color:var(--navy);border:1px solid #cbdcf4}button.danger{background:#b42318}button:disabled{opacity:.5;cursor:not-allowed}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}.status{padding:11px 13px;border-radius:9px;background:#eef5ff;margin:12px 0;white-space:pre-wrap}.status.error{background:#fff0ef;color:#8b1e17}.hidden{display:none!important}
+label{display:block;font-weight:700;margin-bottom:6px}input,select,textarea{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:105px;resize:vertical}
+button,.file-label{display:inline-block;border:0;border-radius:9px;padding:12px 15px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer;font-size:14px}button.secondary,.file-label.secondary{background:#edf4ff;color:var(--navy);border:1px solid #cbdcf4}button.danger{background:var(--red)}button:disabled{opacity:.5;cursor:not-allowed}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}.status{padding:11px 13px;border-radius:9px;background:#eef5ff;margin:12px 0;white-space:pre-wrap}.status.error{background:#fff0ef;color:#8b1e17}
 .table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:11px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--navy);font-size:13px}.pill{display:inline-block;background:#e7f6eb;color:#176b36;border-radius:99px;padding:3px 9px;font-size:12px}.pill.closed{background:#f1f5f9;color:#475569}
+.file-label input{display:none}.callout{background:#fff9df;border-left:4px solid #ffcb05;padding:13px 15px;border-radius:8px;font-size:14px}
 @media(max-width:650px){main{padding:12px 9px 30px}header,.panel{padding:16px}.grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body><main>
-<header><h1>Administração de Torneios</h1><p>Ri Happy Tangará da Serra • Cadastre, edite, abra ou feche torneios.</p><p class="muted">Acesso restrito a usuários cadastrados no Supabase e autorizados como administradores.</p></header>
-<div id="configWarning" class="status error hidden">Falta configurar a chave pública do Supabase em supabase-config.js. Use a chave anon/publishable, nunca a service_role.</div>
-<section class="panel" id="loginPanel">
-<h2>Entrar</h2>
-<form id="loginForm">
-<div class="grid"><div class="field"><label for="email">E-mail administrativo</label><input id="email" type="email" autocomplete="username" required></div><div class="field"><label for="password">Senha</label><input id="password" type="password" autocomplete="current-password" required></div></div>
-<div class="actions"><button id="loginButton" type="submit">Entrar</button></div>
-<p class="muted">A conta deve ser criada previamente no painel do Supabase. Não existe cadastro público nesta página.</p>
-</form></section>
-<div id="app" class="hidden">
-<section class="panel"><div class="actions" style="justify-content:space-between;align-items:center"><div><h2 style="margin-bottom:3px">Torneios cadastrados</h2><p id="signedIn" class="muted"></p></div><button id="logoutButton" class="secondary" type="button">Sair</button></div><div id="status" class="status" aria-live="polite">Carregando torneios…</div><div class="table-wrap"><table><thead><tr><th>Torneio</th><th>Data / horário</th><th>Inscrição</th><th>Status</th><th>Ações</th></tr></thead><tbody id="tournamentRows"></tbody></table></div></section>
-<section class="panel" id="editorPanel"><h2 id="editorTitle">Adicionar torneio</h2>
+<header>
+<h1>Editor de Torneios</h1>
+<p>Ri Happy Tangará da Serra — gerencie os eventos do arquivo <strong>torneios.json</strong>.</p>
+<div class="callout"><strong>Como salvar:</strong> edite os eventos aqui e clique em <em>Baixar torneios.json atualizado</em>. Depois, envie esse arquivo ao GitHub substituindo o antigo. Uma página HTML estática não consegue gravar diretamente no repositório.</div>
+<div class="actions">
+<button id="downloadButton" type="button">Baixar torneios.json atualizado</button>
+<label class="file-label secondary">Importar JSON existente<input id="importFile" type="file" accept=".json,application/json"></label>
+<button id="reloadButton" class="secondary" type="button">Recarregar do site</button>
+</div>
+<p id="loadStatus" class="status" aria-live="polite">Carregando torneios.json…</p>
+</header>
+<section class="panel">
+<div class="actions" style="justify-content:space-between;align-items:center"><h2 style="margin:0">Torneios cadastrados</h2><button id="newButton" type="button">+ Novo torneio</button></div>
+<div class="table-wrap"><table><thead><tr><th>Evento</th><th>Data e horário</th><th>Inscrição</th><th>Status</th><th>Ações</th></tr></thead><tbody id="rows"></tbody></table></div>
+</section>
+<section class="panel" id="editor">
+<h2 id="formTitle">Adicionar torneio</h2>
 <form id="tournamentForm">
 <div class="grid">
-<div class="field"><label for="id">Identificador único (sem espaços)</label><input id="id" required pattern="[a-zA-Z0-9-]+" placeholder="copa-da-liga-2026-12-05"></div>
-<div class="field"><label for="nome">Nome do torneio</label><input id="nome" required></div>
+<div class="field"><label for="id">Identificador único</label><input id="id" required pattern="[a-zA-Z0-9-]+" placeholder="copa-da-liga-2026-12-05"><p class="muted">Use letras sem acento, números e hífens; não repita IDs.</p></div>
+<div class="field"><label for="nome">Nome do torneio</label><input id="nome" required placeholder="Copa da Liga"></div>
 <div class="field"><label for="data">Data (DD/MM/AAAA)</label><input id="data" required placeholder="05/12/2026"></div>
 <div class="field"><label for="horario">Horário</label><input id="horario" required placeholder="13h"></div>
 <div class="field"><label for="valor">Valor da inscrição</label><input id="valor" placeholder="R$ 50,00"></div>
 <div class="field"><label for="formato">Formato</label><select id="formato"><option>Padrão</option><option>Expandido</option><option>Limitado</option><option>Outro / a definir</option></select></div>
-<div class="field"><label for="statusSelect">Status</label><select id="statusSelect"><option value="aberto">Aberto para inscrição</option><option value="fechado">Fechado</option></select></div>
-<div class="field"><label for="decklistObrigatoria">Decklist obrigatória?</label><select id="decklistObrigatoria"><option value="true">Sim</option><option value="false">Não</option></select></div>
+<div class="field"><label for="status">Disponibilidade</label><select id="status"><option value="aberto">Aberto para inscrição</option><option value="fechado">Fechado</option></select></div>
+<div class="field"><label for="decklist">Decklist obrigatória?</label><select id="decklist"><option value="true">Sim</option><option value="false">Não</option></select></div>
 </div>
-<div class="field"><label for="premiacao">Premiação (um item por linha)</label><textarea id="premiacao" placeholder="Troféu para o campeão&#10;Boosters para o top 5"></textarea></div>
+<div class="field"><label for="premiacao">Premiação (um item por linha)</label><textarea id="premiacao" placeholder="Troféu para os primeiros colocados&#10;Boosters para o top 5"></textarea></div>
 <div class="field"><label for="observacao">Observações (opcional)</label><textarea id="observacao" style="min-height:75px"></textarea></div>
-<div class="actions"><button id="saveButton" type="submit">Salvar torneio</button><button id="newButton" type="button" class="secondary">Limpar formulário</button></div>
-</form></section></div>
+<div class="actions"><button id="saveButton" type="submit">Adicionar torneio</button><button id="cancelButton" class="secondary" type="button">Cancelar edição</button></div>
+</form>
+</section>
+<section class="panel"><h2>Passos para publicar as alterações</h2>
+<ol>
+<li>Adicione, edite ou remova os torneios acima.</li>
+<li>Clique em <strong>Baixar torneios.json atualizado</strong>.</li>
+<li>Abra o <a href="https://github.com/rihappytangara/pokemon/blob/main/torneios.json" target="_blank" rel="noopener noreferrer">torneios.json no GitHub</a>, clique no lápis, substitua o conteúdo pelo conteúdo do arquivo baixado e faça o commit. Você também pode usar a opção de upload do GitHub para substituir o arquivo.</li>
+<li>Aguarde o GitHub Pages atualizar e confira o <a href="https://rihappytangara.github.io/pokemon/teste-limitless.html" target="_blank" rel="noopener noreferrer">formulário de inscrição</a>.</li>
+</ol>
+<p class="muted">O editor mantém as alterações na memória desta página até você recarregá-la. Baixe o JSON antes de sair.</p></section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./supabase-config.js"></script>
 <script>
-const cfg=window.SUPABASE_CONFIG||{};
-const ready=cfg.url&&cfg.anonKey&&!cfg.anonKey.includes('COLE_AQUI');
-const statusEl=document.getElementById('status');
-let client=null, editingId=null;
-if(!ready){document.getElementById('configWarning').classList.remove('hidden');document.getElementById('loginButton').disabled=true;}
-else if(window.supabase){client=window.supabase.createClient(cfg.url,cfg.anonKey);}
-function message(text,error=false){statusEl.textContent=text;statusEl.classList.toggle('error',error);}
-function val(id){return document.getElementById(id).value.trim();}
-function setVal(id,v){document.getElementById(id).value=v??'';}
-function clearForm(){editingId=null;document.getElementById('tournamentForm').reset();setVal('decklistObrigatoria','true');document.getElementById('editorTitle').textContent='Adicionar torneio';document.getElementById('saveButton').textContent='Salvar torneio';document.getElementById('id').disabled=false;}
-function editTournament(t){editingId=t.id;for(const k of ['id','nome','data','horario','valor','formato','observacao'])setVal(k,t[k]);setVal('statusSelect',t.status);setVal('decklistObrigatoria',String(t.decklistObrigatoria===true));setVal('premiacao',(Array.isArray(t.premiacao)?t.premiacao:[]).join('\n'));document.getElementById('editorTitle').textContent='Editar torneio';document.getElementById('saveButton').textContent='Salvar alterações';document.getElementById('id').disabled=true;document.getElementById('editorPanel').scrollIntoView({behavior:'smooth',block:'start'});}
-async function loadTournaments(){const {data,error}=await client.from('torneios').select('*').order('data');if(error){message('Erro ao carregar torneios: '+error.message,true);return;}const tbody=document.getElementById('tournamentRows');tbody.replaceChildren();if(!data.length){tbody.innerHTML='<tr><td colspan="5">Nenhum torneio cadastrado.</td></tr>';return;}for(const t of data){const tr=document.createElement('tr');const cells=[t.nome,t.data+' • '+t.horario,t.valor||'—'];for(const v of cells){const td=document.createElement('td');td.textContent=v;tr.appendChild(td);}const statusTd=document.createElement('td');const badge=document.createElement('span');badge.className='pill'+(t.status==='aberto'?'':' closed');badge.textContent=t.status==='aberto'?'Aberto':'Fechado';statusTd.appendChild(badge);tr.appendChild(statusTd);const actions=document.createElement('td');const edit=document.createElement('button');edit.textContent='Editar';edit.className='secondary';edit.type='button';edit.addEventListener('click',()=>editTournament(t));const toggle=document.createElement('button');toggle.textContent=t.status==='aberto'?'Fechar':'Abrir';toggle.className='secondary';toggle.type='button';toggle.style.marginLeft='5px';toggle.addEventListener('click',()=>toggleStatus(t));const del=document.createElement('button');del.textContent='Excluir';del.className='danger';del.type='button';del.style.marginLeft='5px';del.addEventListener('click',()=>deleteTournament(t));actions.append(edit,toggle,del);tr.appendChild(actions);tbody.appendChild(tr);}}
-async function toggleStatus(t){const next=t.status==='aberto'?'fechado':'aberto';const {error}=await client.from('torneios').update({status:next,atualizado_em:new Date().toISOString()}).eq('id',t.id);if(error){message('Não foi possível alterar status: '+error.message,true);return;}message('Status atualizado.');await loadTournaments();}
-async function deleteTournament(t){if(!confirm('Excluir definitivamente o torneio "'+t.nome+'"?'))return;const {error}=await client.from('torneios').delete().eq('id',t.id);if(error){message('Não foi possível excluir: '+error.message,true);return;}message('Torneio excluído.');await loadTournaments();if(editingId===t.id)clearForm();}
-document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();if(!client)return;const b=document.getElementById('loginButton');b.disabled=true;const {data,error}=await client.auth.signInWithPassword({email:val('email'),password:document.getElementById('password').value});b.disabled=false;if(error){alert('Não foi possível entrar. Confira e-mail e senha.');return;}const {data:admin,error:adminError}=await client.from('tournament_admins').select('user_id').eq('user_id',data.user.id).maybeSingle();if(adminError||!admin){await client.auth.signOut();alert('Esta conta não está autorizada como administradora.');return;}document.getElementById('loginPanel').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('signedIn').textContent='Conectado como '+data.user.email;message('Acesso autorizado.');await loadTournaments();});
-document.getElementById('logoutButton').addEventListener('click',async()=>{await client.auth.signOut();document.getElementById('app').classList.add('hidden');document.getElementById('loginPanel').classList.remove('hidden');clearForm();});
-document.getElementById('newButton').addEventListener('click',clearForm);
-document.getElementById('tournamentForm').addEventListener('submit',async e=>{e.preventDefault();if(!client)return;const id=val('id');const payload={id,nome:val('nome'),data:val('data'),horario:val('horario'),valor:val('valor'),formato:val('formato'),status:val('statusSelect'),decklistObrigatoria:val('decklistObrigatoria')==='true',observacao:val('observacao'),premiacao:val('premiacao').split('\n').map(s=>s.trim()).filter(Boolean),atualizado_em:new Date().toISOString()};const b=document.getElementById('saveButton');b.disabled=true;const result=editingId?await client.from('torneios').update(payload).eq('id',editingId):await client.from('torneios').insert(payload);b.disabled=false;if(result.error){message('Erro ao salvar: '+result.error.message,true);return;}message(editingId?'Alterações salvas.':'Torneio cadastrado.');clearForm();await loadTournaments();});
-clearForm();
-</script></body></html>
+const initialData={titulo:"Inscrição de Torneios Pokémon",subtitulo:"Ri Happy Tangará da Serra",torneios:[]};
+let store=JSON.parse(JSON.stringify(initialData));
+let editingId=null;
+const $=id=>document.getElementById(id);
+function status(msg,error=false){$("loadStatus").textContent=msg;$("loadStatus").classList.toggle("error",error)}
+function cleanId(value){return value.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}
+function setField(id,value){$(id).value=value??""}
+function resetForm(){editingId=null;$("tournamentForm").reset();$("decklist").value="true";$("formTitle").textContent="Adicionar torneio";$("saveButton").textContent="Adicionar torneio";$("id").disabled=false}
+function editTournament(t){editingId=t.id;for(const k of ["id","nome","data","horario","valor","formato","observacao"])setField(k,t[k]);setField("status",t.status||"fechado");setField("decklist",String(t.decklistObrigatoria===true));setField("premiacao",Array.isArray(t.premiacao)?t.premiacao.join("\n"):(t.premiacao||""));$("formTitle").textContent="Editar torneio";$("saveButton").textContent="Salvar alterações";$("id").disabled=true;$("editor").scrollIntoView({behavior:"smooth",block:"start"})}
+function render(){const tbody=$("rows");tbody.replaceChildren();if(!store.torneios.length){const tr=document.createElement("tr"),td=document.createElement("td");td.colSpan=5;td.textContent="Nenhum torneio cadastrado.";tr.append(td);tbody.append(tr);return}
+for(const t of store.torneios){const tr=document.createElement("tr");for(const value of [t.nome||"",[t.data,t.horario].filter(Boolean).join(" • "),t.valor||"—"]){const td=document.createElement("td");td.textContent=value;tr.append(td)}const sd=document.createElement("td"),pill=document.createElement("span");pill.className="pill"+(t.status==="aberto"?"":" closed");pill.textContent=t.status==="aberto"?"Aberto":"Fechado";sd.append(pill);tr.append(sd);const ad=document.createElement("td");const edit=document.createElement("button");edit.type="button";edit.className="secondary";edit.textContent="Editar";edit.addEventListener("click",()=>editTournament(t));const toggle=document.createElement("button");toggle.type="button";toggle.className="secondary";toggle.style.marginLeft="5px";toggle.textContent=t.status==="aberto"?"Fechar":"Abrir";toggle.addEventListener("click",()=>{t.status=t.status==="aberto"?"fechado":"aberto";render();status("Alteração feita na página. Baixe o JSON para salvar no GitHub.")});const del=document.createElement("button");del.type="button";del.className="danger";del.style.marginLeft="5px";del.textContent="Remover";del.addEventListener("click",()=>{if(!confirm('Remover "'+t.nome+'" do arquivo?'))return;store.torneios=store.torneios.filter(x=>x.id!==t.id);if(editingId===t.id)resetForm();render();status("Torneio removido da edição local. Baixe o JSON para salvar no GitHub.")});ad.append(edit,toggle,del);tr.append(ad);tbody.append(tr)}}
+async function loadFromSite(){try{const response=await fetch("./torneios.json",{cache:"no-store"});if(!response.ok)throw new Error("Resposta HTTP "+response.status);const data=await response.json();if(!Array.isArray(data.torneios))throw new Error("O JSON não contém uma lista torneios válida.");store=data;render();status("Arquivo carregado do site. As alterações precisam ser baixadas e enviadas ao GitHub para serem publicadas.")}catch(e){status("Não consegui ler o JSON automaticamente (isso acontece se abrir a página como arquivo local). Use “Importar JSON existente” para escolher o torneios.json do computador. Detalhe: "+e.message,true)}}
+$("tournamentForm").addEventListener("submit",e=>{e.preventDefault();const id=$("id").value.trim();if(!editingId&&store.torneios.some(t=>t.id===id)){alert("Esse identificador já existe. Escolha outro.");return}const t={id,nome:$("nome").value.trim(),data:$("data").value.trim(),horario:$("horario").value.trim(),valor:$("valor").value.trim(),formato:$("formato").value,status:$("status").value,decklistObrigatoria:$("decklist").value==="true",observacao:$("observacao").value.trim(),premiacao:$("premiacao").value.split("\n").map(s=>s.trim()).filter(Boolean)};if(editingId){const index=store.torneios.findIndex(x=>x.id===editingId);if(index>=0)store.torneios[index]=t}else store.torneios.push(t);resetForm();render();status("Alteração feita na página. Baixe o JSON para salvar no GitHub.")});
+$("newButton").addEventListener("click",()=>{resetForm();$("editor").scrollIntoView({behavior:"smooth",block:"start"})});
+$("cancelButton").addEventListener("click",resetForm);
+$("reloadButton").addEventListener("click",loadFromSite);
+$("importFile").addEventListener("change",async e=>{const file=e.target.files[0];if(!file)return;try{const data=JSON.parse(await file.text());if(!Array.isArray(data.torneios))throw new Error("O arquivo não tem uma lista torneios válida.");store=data;render();status("JSON importado do computador. Edite e baixe o arquivo atualizado quando terminar.");resetForm()}catch(err){status("Não foi possível importar o JSON: "+err.message,true)}e.target.value=""});
+$("downloadButton").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(store,null,2)+"\n"],{type:"application/json;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="torneios.json";document.body.append(a);a.click();a.remove();URL.revokeObjectURL(url);status("Download iniciado. Envie o arquivo torneios.json ao GitHub para publicar as alterações.")});
+loadFromSite();
+</script>
+</body></html>
