@@ -12,7 +12,13 @@
       "status": "aberto",
       "decklistObrigatoria": false,
       "observacao": "Pré-Release: o baralho é montado no evento; não é necessário enviar decklist.",
-      "premiacao": []
+      "premiacao": [
+        "1º - 6 Prize Packs",
+        "2º - 4 Prize Packs",
+        "3º - 3 Prize Packs",
+        "4º - 2 Prize Packs",
+        "5º - 1 Prize Packs"
+      ]
     },
     {
       "id": "copa-da-liga-2026-12-05",
