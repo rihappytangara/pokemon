@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2a75bb">
+<title>Teste Limitless Deck Builder — Ri Happy Tangará</title>
+<style>
+:root{--blue:#2a75bb;--navy:#1b4f91;--yellow:#ffcb05;--ink:#1f2937;--muted:#64748b;--line:#dbe5f1;--bg:#f3f7fc}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:16px/1.5 Arial,Helvetica,sans-serif;color:var(--ink)}
+main{max-width:1180px;margin:auto;padding:28px 18px 48px}
+header,.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 5px 18px #1b4f9110}
+.tag{display:inline-block;border-radius:999px;background:#fff4bf;padding:6px 12px;font-size:12px;font-weight:800}
+h1{margin:12px 0 8px;color:var(--navy);font-size:clamp(27px,4vw,38px)}h2{font-size:20px;margin:0 0 12px;color:var(--navy)}
+p{margin:8px 0}.muted{color:var(--muted);font-size:14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+a.button,button{display:inline-block;border:0;border-radius:10px;padding:11px 16px;background:var(--blue);color:#fff;font-weight:700;text-decoration:none;cursor:pointer;font-size:14px}
+a.secondary,button.secondary{background:#edf4ff;color:var(--navy);border:1px solid #cbdcf4}
+.frame-wrap{height:min(75vh,850px);min-height:520px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#f8fafc}
+iframe{width:100%;height:100%;border:0;background:white}
+textarea{width:100%;min-height:180px;border:1px solid #cbd5e1;border-radius:10px;padding:12px;font:14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}
+.notice{border-left:4px solid var(--yellow);background:#fff9df;padding:13px 15px;border-radius:8px;font-size:14px}
+.result{white-space:pre-wrap;overflow-wrap:anywhere;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px;min-height:60px}
+@media(max-width:640px){main{padding:16px 10px}.frame-wrap{height:68vh;min-height:440px}.panel,header{padding:16px}}
+</style>
+</head>
+<body>
+<main>
+<header>
+<span class="tag">RI HAPPY TANGARÁ • POKÉMON TCG</span>
+<h1>Teste de integração com o Limitless Deck Builder</h1>
+<p>Esta é uma página experimental para verificar se o construtor do Limitless pode ser aberto dentro do nosso site.</p>
+<div class="actions">
+<a class="button" href="https://my.limitlesstcg.com/builder" target="_blank" rel="noopener noreferrer">Abrir Deck Builder em nova aba</a>
+<a class="button secondary" href="./index.html">Voltar ao cadastro</a>
+</div>
+</header>
+
+<section class="panel">
+<h2>1. Construtor de decks</h2>
+<div class="notice"><strong>Importante:</strong> esta página não armazena nem envia credenciais do Limitless. Se for necessário autenticar, faça isso diretamente no site oficial. Não coloque usuário ou senha em código, formulário ou URL.</div>
+<div class="frame-wrap" style="margin-top:14px">
+<iframe src="https://my.limitlesstcg.com/builder" title="Limitless TCG Deck Builder" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-read; clipboard-write"></iframe>
+</div>
+<p class="muted">Se o conteúdo não carregar ou a autenticação não funcionar aqui, o Limitless pode estar impedindo a incorporação em iframe por política de segurança do próprio site.</p>
+</section>
+
+<section class="panel">
+<h2>2. Área de teste para importar uma decklist</h2>
+<p>Por segurança do navegador, uma página hospedada em nosso domínio não pode ler diretamente o conteúdo interno de um iframe de <strong>my.limitlesstcg.com</strong>. Esta área permite testar a importação colando aqui o texto exportado pelo construtor.</p>
+<label for="deckInput"><strong>Cole a decklist exportada pelo Limitless</strong></label>
+<textarea id="deckInput" placeholder="Copie a decklist no Limitless e cole aqui para testar a leitura do texto."></textarea>
+<div class="actions">
+<button id="parseButton" type="button">Analisar decklist colada</button>
+<button id="clearButton" class="secondary" type="button">Limpar</button>
+</div>
+<h2 style="margin-top:20px">Resultado do teste</h2>
+<div id="result" class="result" aria-live="polite">Aguardando uma decklist.</div>
+<p class="muted">Este protótipo só analisa o texto que você colar. Não captura dados automaticamente do iframe e não envia o conteúdo a nenhum servidor.</p>
+</section>
+</main>
+<script>
+const input=document.getElementById('deckInput');
+const result=document.getElementById('result');
+document.getElementById('parseButton').addEventListener('click',()=>{
+  const raw=input.value.trim();
+  if(!raw){result.textContent='Cole uma decklist antes de analisar.';return;}
+  const lines=raw.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+  const sections=[];
+  let current={name:'Decklist',lines:[]};
+  for(const line of lines){
+    if(/^(Pokémon|Pokemon|Trainer|Trainers|Treinadores|Energy|Energias)\s*:/i.test(line)){
+      if(current.lines.length||current.name!=='Decklist')sections.push(current);
+      current={name:line,lines:[]};
+    }else current.lines.push(line);
+  }
+  sections.push(current);
+  const cardLines=lines.filter(line=>/^\d+\s+/.test(line));
+  const total=cardLines.reduce((sum,line)=>sum+(Number((line.match(/^(\d+)/)||[])[1])||0),0);
+  result.textContent='Linhas identificadas: '+lines.length+'\nLinhas com quantidade de cartas: '+cardLines.length+'\nQuantidade total somada (linhas iniciadas por número): '+total+'\n\nTexto reconhecido:\n'+raw;
+});
+document.getElementById('clearButton').addEventListener('click',()=>{input.value='';result.textContent='Aguardando uma decklist.';});
+</script>
+</body>
+</html>
