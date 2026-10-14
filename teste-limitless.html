@@ -4,82 +4,180 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#2a75bb">
-<title>Teste Limitless Deck Builder — Ri Happy Tangará</title>
+<title>Inscrição de Torneios Pokémon — Ri Happy Tangará</title>
 <style>
-:root{--blue:#2a75bb;--navy:#1b4f91;--yellow:#ffcb05;--ink:#1f2937;--muted:#64748b;--line:#dbe5f1;--bg:#f3f7fc}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font:16px/1.5 Arial,Helvetica,sans-serif;color:var(--ink)}
-main{max-width:1180px;margin:auto;padding:28px 18px 48px}
+:root{--blue:#2a75bb;--navy:#1b4f91;--yellow:#ffcb05;--red:#e3350d;--ink:#1f2937;--muted:#64748b;--line:#dbe5f1;--bg:#f3f7fc}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#ffcb0533,transparent 28%),linear-gradient(180deg,#f8fbff,var(--bg));font:16px/1.5 Arial,Helvetica,sans-serif;color:var(--ink)}
+main{max-width:1000px;margin:auto;padding:26px 16px 48px}
 header,.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 5px 18px #1b4f9110}
 .tag{display:inline-block;border-radius:999px;background:#fff4bf;padding:6px 12px;font-size:12px;font-weight:800}
-h1{margin:12px 0 8px;color:var(--navy);font-size:clamp(27px,4vw,38px)}h2{font-size:20px;margin:0 0 12px;color:var(--navy)}
-p{margin:8px 0}.muted{color:var(--muted);font-size:14px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-a.button,button{display:inline-block;border:0;border-radius:10px;padding:11px 16px;background:var(--blue);color:#fff;font-weight:700;text-decoration:none;cursor:pointer;font-size:14px}
-a.secondary,button.secondary{background:#edf4ff;color:var(--navy);border:1px solid #cbdcf4}
-.frame-wrap{height:min(75vh,850px);min-height:520px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#f8fafc}
-iframe{width:100%;height:100%;border:0;background:white}
-textarea{width:100%;min-height:180px;border:1px solid #cbd5e1;border-radius:10px;padding:12px;font:14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}
+h1{margin:12px 0 8px;color:var(--navy);font-size:clamp(28px,5vw,40px);line-height:1.1}h2{font-size:21px;margin:0 0 14px;color:var(--navy)}
+p{margin:8px 0}.muted,.help{color:var(--muted);font-size:13px;line-height:1.5}
+label{display:block;font-weight:700;margin:0 0 7px}
+input[type=text],input[type=tel],select,textarea{display:block;width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:13px 14px;font:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:3px solid #2a75bb22;border-color:var(--blue)}
+.field{margin:0 0 18px}.event-info{background:#eef5ff;border-left:4px solid var(--blue);border-radius:8px;padding:13px 15px;margin-top:12px}
 .notice{border-left:4px solid var(--yellow);background:#fff9df;padding:13px 15px;border-radius:8px;font-size:14px}
-.result{white-space:pre-wrap;overflow-wrap:anywhere;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:12px;min-height:60px}
-@media(max-width:640px){main{padding:16px 10px}.frame-wrap{height:68vh;min-height:440px}.panel,header{padding:16px}}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+a.button,button{display:inline-block;border:0;border-radius:10px;padding:12px 17px;background:var(--blue);color:#fff;font-weight:700;text-decoration:none;cursor:pointer;font-size:14px}
+a.secondary,button.secondary{background:#edf4ff;color:var(--navy);border:1px solid #cbdcf4}
+.frame-wrap{height:min(72vh,760px);min-height:460px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#f8fafc;margin:12px 0}
+iframe{width:100%;height:100%;border:0;background:white}
+textarea{min-height:190px;resize:vertical;font:14px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace}
+.consent{display:flex;gap:12px;align-items:flex-start;font-weight:400;line-height:1.6}
+.consent input{width:20px;height:20px;flex:0 0 auto;margin-top:3px;accent-color:var(--blue)}
+.submit{width:100%;padding:15px 20px;font-size:16px;background:linear-gradient(135deg,var(--blue),var(--navy))}
+.submit:disabled{opacity:.65;cursor:wait}
+.status{margin-top:12px;color:var(--muted);font-size:13px}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
+@media(max-width:640px){main{padding:14px 10px 34px}.panel,header{padding:17px}.frame-wrap{height:65vh;min-height:400px}}
 </style>
 </head>
 <body>
 <main>
 <header>
 <span class="tag">RI HAPPY TANGARÁ • POKÉMON TCG</span>
-<h1>Teste de integração com o Limitless Deck Builder</h1>
-<p>Esta é uma página experimental para verificar se o construtor do Limitless pode ser aberto dentro do nosso site.</p>
-<div class="actions">
-<a class="button" href="https://my.limitlesstcg.com/builder" target="_blank" rel="noopener noreferrer">Abrir Deck Builder em nova aba</a>
-<a class="button secondary" href="./index.html">Voltar ao cadastro</a>
-</div>
+<h1 id="pageTitle">Inscrição de Torneios Pokémon</h1>
+<p id="pageSubtitle">Preencha seus dados e, quando aplicável, prepare sua decklist no Limitless.</p>
 </header>
 
+<form id="registrationForm" action="https://forminit.com/f/4hewt0inafe" method="POST">
+<input type="hidden" name="_redirect" value="https://rihappytangara.github.io/pokemon/confirmacao.html">
+<input type="hidden" name="_gotcha" style="display:none!important">
 <section class="panel">
-<h2>1. Construtor de decks</h2>
-<div class="notice"><strong>Importante:</strong> esta página não armazena nem envia credenciais do Limitless. Se for necessário autenticar, faça isso diretamente no site oficial. Não coloque usuário ou senha em código, formulário ou URL.</div>
-<div class="frame-wrap" style="margin-top:14px">
-<iframe src="https://my.limitlesstcg.com/builder" title="Limitless TCG Deck Builder" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-read; clipboard-write"></iframe>
+<h2>1. Escolha o torneio</h2>
+<div class="field">
+<label for="tournament">Torneio disponível <span aria-hidden="true">*</span></label>
+<select id="tournament" name="fi-text-torneio" required>
+<option value="">Carregando torneios...</option>
+</select>
+<div id="tournamentInfo" class="event-info" aria-live="polite">Carregando informações do evento…</div>
 </div>
-<p class="muted">Se o conteúdo não carregar ou a autenticação não funcionar aqui, o Limitless pode estar impedindo a incorporação em iframe por política de segurança do próprio site.</p>
 </section>
 
 <section class="panel">
-<h2>2. Área de teste para importar uma decklist</h2>
-<p>Por segurança do navegador, uma página hospedada em nosso domínio não pode ler diretamente o conteúdo interno de um iframe de <strong>my.limitlesstcg.com</strong>. Esta área permite testar a importação colando aqui o texto exportado pelo construtor.</p>
-<label for="deckInput"><strong>Cole a decklist exportada pelo Limitless</strong></label>
-<textarea id="deckInput" placeholder="Copie a decklist no Limitless e cole aqui para testar a leitura do texto."></textarea>
-<div class="actions">
-<button id="parseButton" type="button">Analisar decklist colada</button>
-<button id="clearButton" class="secondary" type="button">Limpar</button>
+<h2>2. Dados do jogador</h2>
+<div class="field">
+<label for="nome">Nome <span aria-hidden="true">*</span></label>
+<input id="nome" name="fi-text-nome" type="text" autocomplete="given-name" placeholder="Digite seu nome" required>
 </div>
-<h2 style="margin-top:20px">Resultado do teste</h2>
-<div id="result" class="result" aria-live="polite">Aguardando uma decklist.</div>
-<p class="muted">Este protótipo só analisa o texto que você colar. Não captura dados automaticamente do iframe e não envia o conteúdo a nenhum servidor.</p>
+<div class="field">
+<label for="sobrenome">Sobrenome <span aria-hidden="true">*</span></label>
+<input id="sobrenome" name="fi-text-sobrenome" type="text" autocomplete="family-name" placeholder="Digite seu sobrenome" required>
+</div>
+<div class="field">
+<label for="playerId">Player ID <span aria-hidden="true">*</span></label>
+<input id="playerId" name="fi-text-playerId" type="text" inputmode="numeric" autocomplete="off" placeholder="Informe sua Player ID oficial" required>
+<p class="help">Ainda não possui Player ID? <a href="https://copag.com.br/uploads/pokemon-jogadores/Como_vincular_um_player_ID_na_minha_conta_Pokemon.pdf" target="_blank" rel="noopener noreferrer">Consulte o tutorial oficial</a>.</p>
+</div>
+<div class="field">
+<label for="telefone">Telefone / WhatsApp <span aria-hidden="true">*</span></label>
+<input id="telefone" name="fi-text-telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(65) 99999-9999" required>
+</div>
 </section>
+
+<section class="panel">
+<h2>3. Construtor de decks</h2>
+<div class="notice"><strong>Como usar:</strong> monte ou abra sua lista no Limitless. Ao terminar, copie/exporte o texto da decklist e cole no campo abaixo. Por uma restrição de segurança do navegador, esta página não consegue ler automaticamente o conteúdo do iframe de outro domínio.</div>
+<div class="actions">
+<a class="button" href="https://my.limitlesstcg.com/builder" target="_blank" rel="noopener noreferrer">Abrir Limitless em nova aba</a>
+</div>
+<div class="frame-wrap">
+<iframe src="https://my.limitlesstcg.com/builder" title="Construtor de decks Limitless TCG" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-read; clipboard-write"></iframe>
+</div>
+<div class="field">
+<label for="decklist">Decklist em texto <span id="deckRequiredMark"></span></label>
+<textarea id="decklist" name="fi-text-decklist" placeholder="Cole aqui a decklist exportada pelo Limitless, se aplicável."></textarea>
+<p class="help" id="deckHelp">A exigência de decklist depende do torneio selecionado.</p>
+</div>
+</section>
+
+<section class="panel">
+<h2>4. Termo de ciência e aceite</h2>
+<label class="consent" for="aceite">
+<input id="aceite" type="checkbox" name="fi-text-aceite" value="Aceito: Declaro que estou ciente de que o Torneio de Pokémon Estampas Ilustradas seguirá as regras oficiais de jogo disponíveis em https://tcg.pokemon.com/pt-br/learn/, e confirmo que o participante inscrito já sabe jogar de acordo com essas regras." required>
+<span>Declaro que estou ciente de que o Torneio de Pokémon Estampas Ilustradas seguirá as regras oficiais de jogo disponíveis em: <a href="https://tcg.pokemon.com/pt-br/learn/" target="_blank" rel="noopener noreferrer">https://tcg.pokemon.com/pt-br/learn/</a>, e confirmo que o participante inscrito já sabe jogar de acordo com essas regras.</span>
+</label>
+</section>
+
+<section class="panel">
+<button class="submit" id="submitButton" type="submit">Enviar inscrição</button>
+<p class="status" id="formStatus" aria-live="polite">Confira os dados antes de enviar. O formulário será encaminhado para o sistema de inscrições.</p>
+</section>
+</form>
+<footer><strong>Ri Happy Tangará da Serra</strong><br>Av. Brasil, 1067-S — Jardim Rio Preto • Tangará da Serra — MT</footer>
 </main>
 <script>
-const input=document.getElementById('deckInput');
-const result=document.getElementById('result');
-document.getElementById('parseButton').addEventListener('click',()=>{
-  const raw=input.value.trim();
-  if(!raw){result.textContent='Cole uma decklist antes de analisar.';return;}
-  const lines=raw.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
-  const sections=[];
-  let current={name:'Decklist',lines:[]};
-  for(const line of lines){
-    if(/^(Pokémon|Pokemon|Trainer|Trainers|Treinadores|Energy|Energias)\s*:/i.test(line)){
-      if(current.lines.length||current.name!=='Decklist')sections.push(current);
-      current={name:line,lines:[]};
-    }else current.lines.push(line);
+const form=document.getElementById('registrationForm');
+const tournament=document.getElementById('tournament');
+const tournamentInfo=document.getElementById('tournamentInfo');
+const decklist=document.getElementById('decklist');
+const deckRequiredMark=document.getElementById('deckRequiredMark');
+const deckHelp=document.getElementById('deckHelp');
+const statusEl=document.getElementById('formStatus');
+const submitButton=document.getElementById('submitButton');
+let tournaments=[];
+
+function renderTournament(){
+  const selected=tournaments.find(t=>t.id===tournament.value);
+  if(!selected){tournamentInfo.textContent='Selecione um torneio para ver os detalhes.';decklist.required=false;deckRequiredMark.textContent='';return;}
+  const parts=[selected.nome,selected.data,selected.horario,selected.valor,selected.formato].filter(Boolean);
+  tournamentInfo.textContent=parts.join(' • ')+(selected.observacao?'\n'+selected.observacao:'');
+  decklist.required=selected.decklistObrigatoria===true;
+  deckRequiredMark.textContent=decklist.required?'*':'(quando aplicável)';
+  deckHelp.textContent=decklist.required?'A decklist é obrigatória para este torneio.':'A decklist é opcional para o torneio selecionado.';
+  decklist.placeholder=decklist.required?'Cole aqui sua decklist completa. Campo obrigatório para este torneio.':'Cole aqui a decklist exportada pelo Limitless, se aplicável.';
+}
+async function loadTournaments(){
+  try{
+    const response=await fetch('./torneios.json',{cache:'no-store'});
+    if(!response.ok)throw new Error('Não foi possível carregar torneios.json');
+    const data=await response.json();
+    document.getElementById('pageTitle').textContent=data.titulo||'Inscrição de Torneios Pokémon';
+    document.getElementById('pageSubtitle').textContent=data.subtitulo||'Ri Happy Tangará da Serra';
+    tournaments=(data.torneios||[]).filter(t=>t.status==='aberto');
+    tournament.innerHTML='<option value="">Selecione um torneio</option>';
+    for(const t of tournaments){
+      const option=document.createElement('option');
+      option.value=t.id;
+      option.textContent=[t.nome,t.data,t.horario].filter(Boolean).join(' — ');
+      option.dataset.label=[t.nome,t.data,t.horario,t.valor,t.formato].filter(Boolean).join(' | ');
+      tournament.appendChild(option);
+    }
+    if(!tournaments.length){
+      tournament.innerHTML='<option value="">Nenhum torneio com inscrições abertas</option>';
+      tournament.disabled=true;
+      submitButton.disabled=true;
+      statusEl.textContent='No momento não há torneios abertos para inscrição.';
+    }
+  }catch(error){
+    tournament.innerHTML='<option value="">Não foi possível carregar os torneios</option>';
+    tournament.disabled=true;submitButton.disabled=true;
+    tournamentInfo.textContent='Verifique se o arquivo torneios.json existe na mesma pasta desta página.';
+    statusEl.textContent='O formulário não pode ser enviado porque a lista de torneios não foi carregada.';
   }
-  sections.push(current);
-  const cardLines=lines.filter(line=>/^\d+\s+/.test(line));
-  const total=cardLines.reduce((sum,line)=>sum+(Number((line.match(/^(\d+)/)||[])[1])||0),0);
-  result.textContent='Linhas identificadas: '+lines.length+'\nLinhas com quantidade de cartas: '+cardLines.length+'\nQuantidade total somada (linhas iniciadas por número): '+total+'\n\nTexto reconhecido:\n'+raw;
+}
+tournament.addEventListener('change',renderTournament);
+document.getElementById('playerId').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,20)});
+document.getElementById('telefone').addEventListener('input',function(){
+  let v=this.value.replace(/\D/g,'').slice(0,11);
+  if(v.length>10)v=v.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/,'($1) $2-$3');
+  else if(v.length>6)v=v.replace(/^(\d{2})(\d{4})(\d{0,4}).*$/,'($1) $2-$3');
+  else if(v.length>2)v=v.replace(/^(\d{2})(\d*)$/,'($1) $2');
+  this.value=v;
 });
-document.getElementById('clearButton').addEventListener('click',()=>{input.value='';result.textContent='Aguardando uma decklist.';});
+form.addEventListener('submit',function(e){
+  const selected=tournaments.find(t=>t.id===tournament.value);
+  if(!selected){e.preventDefault();alert('Selecione um torneio.');tournament.focus();return;}
+  if(selected.decklistObrigatoria===true&&!decklist.value.trim()){
+    e.preventDefault();alert('Este torneio exige o envio da decklist.');decklist.focus();return;
+  }
+  if(!document.getElementById('aceite').checked){e.preventDefault();alert('É necessário aceitar o termo de ciência para se inscrever.');return;}
+  const option=tournament.options[tournament.selectedIndex];
+  const hidden=document.createElement('input');hidden.type='hidden';hidden.name='fi-text-torneio-detalhes';hidden.value=option.dataset.label||selected.nome;form.appendChild(hidden);
+  submitButton.disabled=true;submitButton.textContent='Enviando inscrição…';
+});
+loadTournaments();
 </script>
 </body>
 </html>
