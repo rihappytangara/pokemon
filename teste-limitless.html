@@ -122,7 +122,10 @@ function renderTournament(){
   const selected=tournaments.find(t=>t.id===tournament.value);
   if(!selected){tournamentInfo.textContent='Selecione um torneio para ver os detalhes.';decklist.required=false;deckRequiredMark.textContent='';return;}
   const parts=[selected.nome,selected.data,selected.horario,selected.valor,selected.formato].filter(Boolean);
-  tournamentInfo.textContent=parts.join(' • ')+(selected.observacao?'\n'+selected.observacao:'');
+  const prizeText=Array.isArray(selected.premiacao)&&selected.premiacao.length
+    ? '\nPremiação: '+selected.premiacao.join(' • ')
+    : (typeof selected.premiacao==='string'&&selected.premiacao.trim()?'\nPremiação: '+selected.premiacao:'');
+  tournamentInfo.textContent=parts.join(' • ')+(prizeText||'')+(selected.observacao?'\n'+selected.observacao:'');
   decklist.required=selected.decklistObrigatoria===true;
   deckRequiredMark.textContent=decklist.required?'*':'(quando aplicável)';
   deckHelp.textContent=decklist.required?'A decklist é obrigatória para este torneio.':'A decklist é opcional para o torneio selecionado.';
