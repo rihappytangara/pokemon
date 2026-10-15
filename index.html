@@ -231,7 +231,8 @@ async function loadTournaments(){
   console.error('Falha ao carregar torneios.json:',lastError);
 }
 tournament.addEventListener('change',renderTournament);
-document.getElementById('anoNascimento').addEventListener('input',function(){this.value=this.value.replace(/\\D/g,'').slice(0,4)});\ndocument.getElementById('playerId').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,20)});
+document.getElementById('anoNascimento').addEventListener('input',function(){this.value=this.value.replace(/\\D/g,'').slice(0,4)});
+document.getElementById('playerId').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,20)});
 document.getElementById('telefone').addEventListener('input',function(){
   let value=this.value;
   const hasPlus=value.trim().startsWith('+');
