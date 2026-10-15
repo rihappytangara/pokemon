@@ -93,7 +93,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 <div class="field">
 <label for="decklist">Decklist em texto <span id="deckRequiredMark"></span></label>
 <textarea id="decklist" name="fi-text-decklist" placeholder="Cole aqui a decklist exportada pelo Limitless, se aplicável."></textarea>
-<p class="help" id="deckHelp">A exigência de decklist depende do torneio selecionado.</p>
+<p class="help" id="deckHelp">A lista será validada: deve conter Pokémon, Trainer e Energy e totalizar 60 cartas.</p>
+<p class="help" id="deckValidation" role="status" aria-live="polite"></p>
 </div>
 </section>
 
@@ -120,9 +121,52 @@ const decklist=document.getElementById('decklist');
 const deckSection=document.getElementById('deckSection');
 const deckRequiredMark=document.getElementById('deckRequiredMark');
 const deckHelp=document.getElementById('deckHelp');
+const deckValidation=document.getElementById('deckValidation');
 const statusEl=document.getElementById('formStatus');
 const submitButton=document.getElementById('submitButton');
 let tournaments=[];
+
+function validateDecklist(raw){
+  const lines=raw.split(/\\r?\\n/).map(line=>line.trim()).filter(Boolean);
+  const headings={pokemon:null,trainer:null,energy:null};
+  const cards={pokemon:0,trainer:0,energy:0};
+  let current=null;
+  const errors=[];
+  const headingPattern=/^(Pok[eé]mon|Trainer|Energy)\\s*:\\s*(\\d+)$/i;
+  const cardPattern=/^(\\d+)\\s+(.+?)\\s+([A-Z0-9]{2,6})\\s+([A-Z0-9]+(?:\\/[A-Z0-9]+)?)$/i;
+  for(const line of lines){
+    const heading=line.match(headingPattern);
+    if(heading){
+      const key=/^pok/i.test(heading[1])?'pokemon':heading[1].toLowerCase();
+      if(headings[key]!==null){errors.push('A seção '+heading[1]+' aparece mais de uma vez.');continue;}
+      headings[key]=Number(heading[2]);
+      current=key;
+      continue;
+    }
+    const card=line.match(cardPattern);
+    if(!card){
+      errors.push('Linha fora do padrão do Limitless: “'+line+'”.');
+      continue;
+    }
+    if(!current){
+      errors.push('Há cartas antes da primeira seção (Pokémon, Trainer ou Energy).');
+      continue;
+    }
+    const quantity=Number(card[1]);
+    if(!Number.isInteger(quantity)||quantity<1){
+      errors.push('Cada carta precisa ter uma quantidade inteira maior que zero.');
+      continue;
+    }
+    cards[current]+=quantity;
+  }
+  for(const key of ['pokemon','trainer','energy']){
+    if(headings[key]===null)errors.push('Está faltando a seção '+({pokemon:'Pokémon',trainer:'Trainer',energy:'Energy'}[key])+': quantidade.');
+    else if(headings[key]!==cards[key])errors.push('A seção '+({pokemon:'Pokémon',trainer:'Trainer',energy:'Energy'}[key])+' informa '+headings[key]+' cartas, mas as linhas somam '+cards[key]+'.');
+  }
+  const total=cards.pokemon+cards.trainer+cards.energy;
+  if(total!==60)errors.push('A lista soma '+total+' cartas. O total exigido é 60.');
+  return {valid:errors.length===0,errors,total};
+}
 
 function renderTournament(){
   const selected=tournaments.find(t=>t.id===tournament.value);
@@ -181,6 +225,19 @@ form.addEventListener('submit',function(e){
   if(!selected){e.preventDefault();alert('Selecione um torneio.');tournament.focus();return;}
   if(selected.decklistObrigatoria===true&&!decklist.value.trim()){
     e.preventDefault();alert('Este torneio exige o envio da decklist.');decklist.focus();return;
+  }
+  if(selected.decklistObrigatoria===true){
+    const validation=validateDecklist(decklist.value);
+    if(!validation.valid){
+      e.preventDefault();
+      deckValidation.textContent='A decklist precisa ser corrigida:\\n• '+validation.errors.join('\\n• ');
+      deckValidation.style.color='#b42318';
+      decklist.focus();
+      alert('A decklist não passou na validação. Confira as mensagens abaixo do campo.');
+      return;
+    }
+    deckValidation.textContent='Decklist validada: 60 cartas e estrutura de Pokémon, Trainer e Energy reconhecida.';
+    deckValidation.style.color='#18794e';
   }
   if(!document.getElementById('aceite').checked){e.preventDefault();alert('É necessário aceitar o termo de ciência para se inscrever.');return;}
   const option=tournament.options[tournament.selectedIndex];
