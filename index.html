@@ -76,8 +76,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 </div>
 <div class="field">
 <label for="anoNascimento">Ano de Nascimento <span aria-hidden="true">*</span></label>
-<input id="anoNascimento" name="fi-number-anoNascimento" type="number" inputmode="numeric" min="1900" max="2026" step="1" placeholder="Ex.: 2012" required>
-<p class="help">Informe o ano em que o jogador nasceu.</p>
+<input id="anoNascimento" name="fi-text-anoNascimento" type="text" inputmode="numeric" autocomplete="bday-year" minlength="4" maxlength="4" pattern="[0-9]{4}" placeholder="Ex.: 2012" aria-describedby="anoNascimentoHelp" required>
+<p class="help" id="anoNascimentoHelp">Informe exatamente 4 dígitos numéricos.</p>
 </div>
 </section>
 
@@ -212,7 +212,7 @@ async function loadTournaments(){
   }
 }
 tournament.addEventListener('change',renderTournament);
-document.getElementById('playerId').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,20)});
+document.getElementById('anoNascimento').addEventListener('input',function(){this.value=this.value.replace(/\\D/g,'').slice(0,4)});\ndocument.getElementById('playerId').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,20)});
 document.getElementById('telefone').addEventListener('input',function(){
   let v=this.value.replace(/\D/g,'').slice(0,11);
   if(v.length>10)v=v.replace(/^(\d{2})(\d{5})(\d{0,4}).*$/,'($1) $2-$3');
