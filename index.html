@@ -184,33 +184,51 @@ function renderTournament(){
   decklist.placeholder=decklist.required?'Cole aqui sua decklist completa. Campo obrigatório para este torneio.':'Cole aqui a decklist exportada pelo Limitless, se aplicável.';
 }
 async function loadTournaments(){
-  try{
-    const response=await fetch('./torneios.json',{cache:'no-store'});
-    if(!response.ok)throw new Error('Não foi possível carregar torneios.json');
-    const data=await response.json();
-    document.getElementById('pageTitle').textContent=data.titulo||'Inscrição de Torneios Pokémon';
-    document.getElementById('pageSubtitle').textContent=data.subtitulo||'Ri Happy Tangará da Serra';
-    tournaments=(data.torneios||[]).filter(t=>t.status==='aberto');
-    tournament.innerHTML='<option value="">Selecione um torneio</option>';
-    for(const t of tournaments){
-      const option=document.createElement('option');
-      option.value=t.id;
-      option.textContent=[t.nome,t.data,t.horario].filter(Boolean).join(' — ');
-      option.dataset.label=[t.nome,t.data,t.horario,t.valor,t.formato].filter(Boolean).join(' | ');
-      tournament.appendChild(option);
+  tournament.disabled=true;
+  submitButton.disabled=true;
+  tournament.innerHTML='<option value="">Carregando torneios...</option>';
+  const urls=[
+    new URL('torneios.json',window.location.href).href,
+    'https://rihappytangara.github.io/pokemon/torneios.json'
+  ];
+  let lastError=null;
+  for(const url of [...new Set(urls)]){
+    try{
+      const response=await fetch(url+'?v='+Date.now(),{cache:'no-store'});
+      if(!response.ok)throw new Error('HTTP '+response.status+' ao acessar '+url);
+      const data=await response.json();
+      if(!Array.isArray(data.torneios))throw new Error('O arquivo JSON não contém uma lista "torneios".');
+      document.getElementById('pageTitle').textContent=data.titulo||'Inscrição de Torneios Pokémon';
+      document.getElementById('pageSubtitle').textContent=data.subtitulo||'Ri Happy Tangará da Serra';
+      tournaments=data.torneios.filter(t=>t.status==='aberto');
+      tournament.innerHTML='<option value="">Selecione um torneio</option>';
+      for(const t of tournaments){
+        const option=document.createElement('option');
+        option.value=t.id;
+        option.textContent=[t.nome,t.data,t.horario].filter(Boolean).join(' — ');
+        option.dataset.label=[t.nome,t.data,t.horario,t.valor,t.formato].filter(Boolean).join(' | ');
+        tournament.appendChild(option);
+      }
+      if(!tournaments.length){
+        tournament.innerHTML='<option value="">Nenhum torneio com inscrições abertas</option>';
+        statusEl.textContent='O arquivo foi carregado, mas não há torneios com status "aberto".';
+        return;
+      }
+      tournament.disabled=false;
+      submitButton.disabled=false;
+      tournamentInfo.textContent='Selecione um torneio para ver os detalhes.';
+      statusEl.textContent='Lista de torneios carregada.';
+      return;
+    }catch(error){
+      lastError=error;
     }
-    if(!tournaments.length){
-      tournament.innerHTML='<option value="">Nenhum torneio com inscrições abertas</option>';
-      tournament.disabled=true;
-      submitButton.disabled=true;
-      statusEl.textContent='No momento não há torneios abertos para inscrição.';
-    }
-  }catch(error){
-    tournament.innerHTML='<option value="">Não foi possível carregar os torneios</option>';
-    tournament.disabled=true;submitButton.disabled=true;
-    tournamentInfo.textContent='Verifique se o arquivo torneios.json existe na mesma pasta desta página.';
-    statusEl.textContent='O formulário não pode ser enviado porque a lista de torneios não foi carregada.';
   }
+  tournament.innerHTML='<option value="">Não foi possível carregar os torneios</option>';
+  tournament.disabled=true;
+  submitButton.disabled=true;
+  tournamentInfo.textContent='Não foi possível acessar torneios.json. Confira se o arquivo está publicado no GitHub Pages.';
+  statusEl.textContent='Erro ao carregar a lista de torneios. Tente atualizar a página; se persistir, verifique a publicação do GitHub Pages.';
+  console.error('Falha ao carregar torneios.json:',lastError);
 }
 tournament.addEventListener('change',renderTournament);
 document.getElementById('anoNascimento').addEventListener('input',function(){this.value=this.value.replace(/\\D/g,'').slice(0,4)});\ndocument.getElementById('playerId').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,20)});
