@@ -35,6 +35,21 @@
         "Playmat para os 1º colocados da categoria",
         "Boosters para o top 5"
       ]
+    },
+    {
+      "id": "pre-release-cnp-24-10-2026",
+      "nome": "Pré-Release - Reinado Delta (Campo Novo do Parecis)",
+      "data": "24/10/2026",
+      "horario": "13h",
+      "valor": "-",
+      "formato": "Limitado",
+      "status": "aberto",
+      "decklistObrigatoria": false,
+      "observacao": "",
+      "premiacao": [
+        "1 Prize por participante",
+        "4 Prizes para o Vencedor"
+      ]
     }
   ]
 }
