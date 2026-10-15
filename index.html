@@ -74,6 +74,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 <label for="telefone">Telefone / WhatsApp <span aria-hidden="true">*</span></label>
 <input id="telefone" name="fi-text-telefone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(65) 99999-9999" required>
 </div>
+<div class="field">
+<label for="anoNascimento">Ano de Nascimento <span aria-hidden="true">*</span></label>
+<input id="anoNascimento" name="fi-number-anoNascimento" type="number" inputmode="numeric" min="1900" max="2026" step="1" placeholder="Ex.: 2012" required>
+<p class="help">Informe o ano em que o jogador nasceu.</p>
+</div>
 </section>
 
 <section class="panel" id="deckSection" hidden>
