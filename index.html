@@ -30,6 +30,13 @@ textarea{min-height:190px;resize:vertical;font:14px/1.5 ui-monospace,SFMono-Regu
 .submit:disabled{opacity:.65;cursor:wait}
 .status{margin-top:12px;color:var(--muted);font-size:13px}
 footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
+.tournament-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:12px}
+.tournament-card{display:flex;flex-direction:column;gap:8px;text-align:left;padding:10px;border:2px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);cursor:pointer}
+.tournament-card:hover{border-color:var(--blue)}
+.tournament-card[aria-pressed="true"]{border-color:var(--blue);background:#eef5ff;box-shadow:0 0 0 3px #2a75bb20}
+.tournament-card img,.poster-placeholder{display:grid;width:100%;aspect-ratio:4/5;object-fit:contain;background:#f1f5f9;border-radius:8px}
+.poster-placeholder{place-items:center;background:linear-gradient(145deg,#eef5ff,#fff4bf);color:var(--navy);font-weight:800;text-align:center;padding:18px}
+.tournament-card strong{font-size:15px;line-height:1.3}.tournament-card small{color:var(--muted);font-size:13px}
 @media(max-width:640px){main{padding:14px 10px 34px}.panel,header{padding:17px}.frame-wrap{height:65vh;min-height:400px}}
 </style>
 </head>
@@ -45,11 +52,10 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 <section class="panel">
 <h2>1. Escolha o torneio</h2>
 <div class="field">
-<label for="tournament">Torneio disponível <span aria-hidden="true">*</span></label>
-<select id="tournament" name="fi-text-torneio" required>
-<option value="">Carregando torneios...</option>
-</select>
-<div id="tournamentInfo" class="event-info" aria-live="polite">Carregando informações do evento…</div>
+<label>Selecione o cartaz do torneio <span aria-hidden="true">*</span></label>
+<div id="tournamentCards" class="tournament-cards" role="group" aria-label="Torneios disponíveis"><p class="help">Carregando torneios...</p></div>
+<input id="tournament" type="hidden" required>
+<div id="tournamentInfo" class="event-info" aria-live="polite">Selecione um cartaz para ver os detalhes do evento.</div>
 </div>
 </section>
 
@@ -115,6 +121,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 const form=document.getElementById('registrationForm');
 const tournament=document.getElementById('tournament');
 const tournamentInfo=document.getElementById('tournamentInfo');
+const tournamentCards=document.getElementById('tournamentCards');
 const decklist=document.getElementById('decklist');
 const deckSection=document.getElementById('deckSection');
 const deckRequiredMark=document.getElementById('deckRequiredMark');
@@ -169,6 +176,7 @@ function validateDecklist(raw){
 
 function renderTournament(){
   const selected=tournaments.find(t=>t.id===tournament.value);
+  for(const card of tournamentCards.querySelectorAll('.tournament-card'))card.setAttribute('aria-pressed',String(card.dataset.id===tournament.value));
   if(!selected){tournamentInfo.textContent='Selecione um torneio para ver os detalhes.';decklist.required=false;deckRequiredMark.textContent='';deckSection.hidden=true;return;}
   const parts=[selected.nome,selected.data,selected.horario,selected.valor,selected.formato].filter(Boolean);
   const prizeText=Array.isArray(selected.premiacao)&&selected.premiacao.length
@@ -184,7 +192,7 @@ function renderTournament(){
 async function loadTournaments(){
   tournament.disabled=true;
   submitButton.disabled=true;
-  tournament.innerHTML='<option value="">Carregando torneios...</option>';
+  tournamentCards.innerHTML='<p class="help">Carregando torneios...</p>';
   const urls=[
     new URL('torneios.json',window.location.href).href,
     'https://rihappytangara.github.io/pokemon/torneios.json'
@@ -199,22 +207,26 @@ async function loadTournaments(){
       document.getElementById('pageTitle').textContent=data.titulo||'Inscrição de Torneios Pokémon';
       document.getElementById('pageSubtitle').textContent=data.subtitulo||'Ri Happy Tangará da Serra';
       tournaments=data.torneios.filter(t=>t.status==='aberto');
-      tournament.innerHTML='<option value="">Selecione um torneio</option>';
-      for(const t of tournaments){
-        const option=document.createElement('option');
-        option.value=t.id;
-        option.textContent=[t.nome,t.data,t.horario].filter(Boolean).join(' — ');
-        option.dataset.label=[t.nome,t.data,t.horario,t.valor,t.formato].filter(Boolean).join(' | ');
-        tournament.appendChild(option);
-      }
+      tournamentCards.replaceChildren();
       if(!tournaments.length){
-        tournament.innerHTML='<option value="">Nenhum torneio com inscrições abertas</option>';
+        tournamentCards.textContent='Nenhum torneio com inscrições abertas.';
         statusEl.textContent='O arquivo foi carregado, mas não há torneios com status "aberto".';
         return;
       }
+      for(const t of tournaments){
+        const card=document.createElement('button');
+        card.type='button';card.className='tournament-card';card.dataset.id=t.id;card.setAttribute('aria-pressed','false');
+        if(t.imagem){const img=document.createElement('img');img.src=t.imagem;img.alt='Cartaz do torneio '+(t.nome||'');card.appendChild(img)}
+        else{const placeholder=document.createElement('span');placeholder.className='poster-placeholder';placeholder.textContent=t.nome||'Torneio Pokémon';card.appendChild(placeholder)}
+        const title=document.createElement('strong');title.textContent=t.nome||'Torneio Pokémon';
+        const meta=document.createElement('small');meta.textContent=[t.data,t.horario].filter(Boolean).join(' • ');
+        card.append(title,meta);
+        card.addEventListener('click',()=>{tournament.value=t.id;renderTournament()});
+        tournamentCards.appendChild(card);
+      }
       tournament.disabled=false;
       submitButton.disabled=false;
-      tournamentInfo.textContent='Selecione um torneio para ver os detalhes.';
+      tournamentInfo.textContent='Selecione um cartaz para ver os detalhes.';
       statusEl.textContent='Lista de torneios carregada.';
       return;
     }catch(error){
@@ -228,7 +240,7 @@ async function loadTournaments(){
   statusEl.textContent='Erro ao carregar a lista de torneios. Tente atualizar a página; se persistir, verifique a publicação do GitHub Pages.';
   console.error('Falha ao carregar torneios.json:',lastError);
 }
-tournament.addEventListener('change',renderTournament);
+/* A seleção do torneio é feita clicando nos cartazes. */
 document.getElementById('anoNascimento').addEventListener('input',function(){this.value=this.value.replace(/\\D/g,'').slice(0,4)});
 document.getElementById('playerId').addEventListener('input',function(){this.value=this.value.replace(/\D/g,'').slice(0,20)});
 document.getElementById('telefone').addEventListener('input',function(){
