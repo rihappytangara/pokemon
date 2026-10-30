@@ -41,9 +41,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 <p id="pageSubtitle">Preencha seus dados e, quando aplicável, prepare sua decklist no Limitless.</p>
 </header>
 
-<form id="registrationForm" action="https://forminit.com/f/4hewt0inafe" method="POST">
-<input type="hidden" name="_redirect" value="https://rihappytangara.github.io/pokemon/confirmacao.html">
-<input type="hidden" name="_gotcha" style="display:none!important">
+<form id="registrationForm">
 <section class="panel">
 <h2>1. Escolha o torneio</h2>
 <div class="field">
@@ -247,16 +245,18 @@ document.getElementById('telefone').addEventListener('blur',function(){
   }
 });
 document.getElementById('telefone').addEventListener('input',function(){this.setCustomValidity('')});
-form.addEventListener('submit',function(e){
+const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycbwMU_nPDPGeJI-Y_sEEUQVtVhQZw-FZJLDUbeLSx96dYsRFd37nGxN2Im3327ZiR7RIhw/exec';
+
+form.addEventListener('submit',async function(e){
+  e.preventDefault();
   const selected=tournaments.find(t=>t.id===tournament.value);
-  if(!selected){e.preventDefault();alert('Selecione um torneio.');tournament.focus();return;}
+  if(!selected){alert('Selecione um torneio.');tournament.focus();return;}
   if(selected.decklistObrigatoria===true&&!decklist.value.trim()){
-    e.preventDefault();alert('Este torneio exige o envio da decklist.');decklist.focus();return;
+    alert('Este torneio exige o envio da decklist.');decklist.focus();return;
   }
   if(selected.decklistObrigatoria===true){
     const validation=validateDecklist(decklist.value);
     if(!validation.valid){
-      e.preventDefault();
       deckValidation.textContent='A decklist precisa ser corrigida:\n• '+validation.errors.join('\n• ');
       deckValidation.style.color='#b42318';
       decklist.focus();
@@ -266,10 +266,46 @@ form.addEventListener('submit',function(e){
     deckValidation.textContent='Decklist validada: 60 cartas e estrutura de Pokémon, Trainer e Energy reconhecida.';
     deckValidation.style.color='#18794e';
   }
-  if(!document.getElementById('aceite').checked){e.preventDefault();alert('É necessário aceitar o termo de ciência para se inscrever.');return;}
-  const option=tournament.options[tournament.selectedIndex];
-  const hidden=document.createElement('input');hidden.type='hidden';hidden.name='fi-text-torneio-detalhes';hidden.value=option.dataset.label||selected.nome;form.appendChild(hidden);
-  submitButton.disabled=true;submitButton.textContent='Enviando inscrição…';
+  const aceite=document.getElementById('aceite');
+  if(!aceite.checked){alert('É necessário aceitar o termo de ciência para se inscrever.');aceite.focus();return;}
+
+  const telefoneValor=document.getElementById('telefone').value.trim();
+  const telefoneDigitos=telefoneValor.replace(/\D/g,'');
+  if(telefoneDigitos.length<10||telefoneDigitos.length>15){
+    alert('Informe um telefone válido, com DDD e código do país quando necessário.');
+    document.getElementById('telefone').focus();
+    return;
+  }
+
+  const payload={
+    torneio:[selected.nome,selected.data,selected.horario].filter(Boolean).join(' — '),
+    nome:document.getElementById('nome').value.trim(),
+    sobrenome:document.getElementById('sobrenome').value.trim(),
+    playerId:document.getElementById('playerId').value.trim(),
+    telefone:telefoneValor,
+    anoNascimento:document.getElementById('anoNascimento').value.trim(),
+    decklist:selected.decklistObrigatoria===true?decklist.value.trim():''
+  };
+
+  submitButton.disabled=true;
+  submitButton.textContent='Enviando inscrição…';
+  statusEl.textContent='Enviando seus dados com segurança. Não feche esta página.';
+
+  try{
+    // text/plain evita preflight CORS; a resposta do Apps Script é opaca no navegador.
+    await fetch(GOOGLE_SCRIPT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify(payload)
+    });
+    window.location.href='https://rihappytangara.github.io/pokemon/confirmacao.html';
+  }catch(error){
+    console.error('Falha no envio da inscrição:',error);
+    statusEl.textContent='Não foi possível enviar a inscrição. Verifique sua conexão e tente novamente.';
+    submitButton.disabled=false;
+    submitButton.textContent='Enviar inscrição';
+  }
 });
 loadTournaments();
 </script>
