@@ -130,12 +130,13 @@ function validateDecklist(raw){
   const cards={pokemon:0,trainer:0,energy:0};
   let current=null;
   const errors=[];
-  const headingPattern=/^(Pok[eé]mon|Trainer|Energy)\s*:\s*(\d+)$/i;
+  const headingPattern=/^(Pok[eé]mon|Pok[eé]mons|Trainer|Treinador(?:es)?|Energy|Energia)\s*:\s*(\d+)$/i;
   const cardPattern=/^(\d+)\s+(.+?)\s+([A-Z0-9]{2,6})\s+([A-Z0-9]+(?:\/[A-Z0-9]+)?)$/i;
   for(const line of lines){
     const heading=line.match(headingPattern);
     if(heading){
-      const key=/^pok/i.test(heading[1])?'pokemon':heading[1].toLowerCase();
+      const label=heading[1].normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+      const key=label.startsWith('pok')?'pokemon':(label.startsWith('train')||label.startsWith('treinador'))?'trainer':'energy';
       if(headings[key]!==null){errors.push('A seção '+heading[1]+' aparece mais de uma vez.');continue;}
       headings[key]=Number(heading[2]);
       current=key;
@@ -158,8 +159,8 @@ function validateDecklist(raw){
     cards[current]+=quantity;
   }
   for(const key of ['pokemon','trainer','energy']){
-    if(headings[key]===null)errors.push('Está faltando a seção '+({pokemon:'Pokémon',trainer:'Trainer',energy:'Energy'}[key])+': quantidade.');
-    else if(headings[key]!==cards[key])errors.push('A seção '+({pokemon:'Pokémon',trainer:'Trainer',energy:'Energy'}[key])+' informa '+headings[key]+' cartas, mas as linhas somam '+cards[key]+'.');
+    if(headings[key]===null)errors.push('Está faltando a seção '+({pokemon:'Pokémon',trainer:'Treinador/Trainer',energy:'Energia/Energy'}[key])+': quantidade.');
+    else if(headings[key]!==cards[key])errors.push('A seção '+({pokemon:'Pokémon',trainer:'Treinador/Trainer',energy:'Energia/Energy'}[key])+' informa '+headings[key]+' cartas, mas as linhas somam '+cards[key]+'.');
   }
   const total=cards.pokemon+cards.trainer+cards.energy;
   if(total!==60)errors.push('A lista soma '+total+' cartas. O total exigido é 60.');
