@@ -29,7 +29,7 @@ textarea{min-height:190px;resize:vertical;font:14px/1.5 ui-monospace,SFMono-Regu
 .submit{width:100%;padding:15px 20px;font-size:16px;background:linear-gradient(135deg,var(--blue),var(--navy))}
 .submit:disabled{opacity:.65;cursor:wait}
 .status{margin-top:12px;color:var(--muted);font-size:13px}
-footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
+.public-list{margin-bottom:18px}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}.public-table{width:100%;border-collapse:collapse;min-width:650px;font-size:14px}.public-table th,.public-table td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line)}.public-table th{background:#eef5ff;color:var(--navy)}.public-table tr:last-child td{border-bottom:0}.list-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.list-status{font-size:13px;color:var(--muted)}.privacy-consent{display:flex;gap:12px;align-items:flex-start;font-weight:400;line-height:1.6}.privacy-consent input{width:20px;height:20px;flex:0 0 auto;margin-top:3px;accent-color:var(--blue)} \nfooter{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 .tournament-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:12px}
 .tournament-card{display:flex;flex-direction:column;gap:8px;text-align:left;padding:10px;border:2px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);cursor:pointer}
 .tournament-card:hover{border-color:var(--blue)}
@@ -48,7 +48,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 <p id="pageSubtitle">Preencha seus dados e, quando aplicável, prepare sua decklist no Limitless.</p>
 </header>
 
-<form id="registrationForm">
+<section class="panel public-list" aria-labelledby="publicListTitle">\n<h2 id="publicListTitle">Jogadores inscritos — inscrições aprovadas</h2>\n<p class="muted">Confira quem já está confirmado em cada torneio antes de realizar sua inscrição.</p>\n<div class="list-toolbar"><span id="publicListStatus" class="list-status" role="status" aria-live="polite">Carregando inscritos...</span><button type="button" class="secondary" id="refreshPublicList">Atualizar lista</button></div>\n<div class="table-wrap" style="margin-top:12px"><table class="public-table"><thead><tr><th>Player ID</th><th>Nome</th><th>Sobrenome</th><th>Ano de nascimento</th><th>Torneio</th></tr></thead><tbody id="approvedRegistrations"><tr><td colspan="5">Carregando...</td></tr></tbody></table></div>\n</section>\n\n<form id="registrationForm">
 <section class="panel">
 <h2>1. Escolha o torneio</h2>
 <div class="field">
@@ -275,6 +275,49 @@ document.getElementById('telefone').addEventListener('blur',function(){
 });
 document.getElementById('telefone').addEventListener('input',function(){this.setCustomValidity('')});
 const GOOGLE_SCRIPT_URL='https://script.google.com/macros/s/AKfycbwMU_nPDPGeJI-Y_sEEUQVtVhQZw-FZJLDUbeLSx96dYsRFd37nGxN2Im3327ZiR7RIhw/exec';
+const approvedBody=document.getElementById('approvedRegistrations');
+const publicListStatus=document.getElementById('publicListStatus');
+function loadApprovedRegistrations(){
+  publicListStatus.textContent='Atualizando lista...';
+  approvedBody.innerHTML='<tr><td colspan="5">Carregando...</td></tr>';
+  const callbackName='approvedListCallback_'+Date.now();
+  const script=document.createElement('script');
+  const timeout=setTimeout(()=>{
+    cleanup();
+    publicListStatus.textContent='Não foi possível carregar a lista. Tente novamente mais tarde.';
+    approvedBody.innerHTML='<tr><td colspan="5">Lista temporariamente indisponível.</td></tr>';
+  },15000);
+  function cleanup(){clearTimeout(timeout);script.remove();try{delete window[callbackName]}catch(e){window[callbackName]=undefined}}
+  window[callbackName]=function(data){
+    cleanup();
+    if(!data||data.success!==true||!Array.isArray(data.inscritos)){
+      publicListStatus.textContent='Não foi possível carregar os inscritos.';
+      approvedBody.innerHTML='<tr><td colspan="5">Lista temporariamente indisponível.</td></tr>';
+      return;
+    }
+    const rows=data.inscritos;
+    approvedBody.replaceChildren();
+    if(!rows.length){
+      approvedBody.innerHTML='<tr><td colspan="5">Ainda não há inscrições aprovadas.</td></tr>';
+    }else{
+      for(const item of rows){
+        const tr=document.createElement('tr');
+        for(const value of [item.playerId,item.nome,item.sobrenome,item.anoNascimento,item.torneio]){
+          const td=document.createElement('td');
+          td.textContent=value==null?'':String(value);
+          tr.appendChild(td);
+        }
+        approvedBody.appendChild(tr);
+      }
+    }
+    publicListStatus.textContent=rows.length+' inscrição(ões) aprovada(s).';
+  };
+  script.src=GOOGLE_SCRIPT_URL+'?action=approvedRegistrations&callback='+encodeURIComponent(callbackName)+'&v='+Date.now();
+  script.onerror=function(){cleanup();publicListStatus.textContent='Erro ao consultar a planilha.';approvedBody.innerHTML='<tr><td colspan="5">Lista temporariamente indisponível.</td></tr>'};
+  document.head.appendChild(script);
+}
+document.getElementById('refreshPublicList').addEventListener('click',loadApprovedRegistrations);
+loadApprovedRegistrations();
 
 form.addEventListener('submit',async function(e){
   e.preventDefault();
@@ -313,7 +356,7 @@ form.addEventListener('submit',async function(e){
     playerId:document.getElementById('playerId').value.trim(),
     telefone:telefoneValor,
     anoNascimento:document.getElementById('anoNascimento').value.trim(),
-    decklist:selected.decklistObrigatoria===true?decklist.value.trim():''
+    decklist:selected.decklistObrigatoria===true?decklist.value.trim():'',\n    autorizacaoPublicacao:document.getElementById('autorizacaoPublicacao').checked
   };
 
   submitButton.disabled=true;
