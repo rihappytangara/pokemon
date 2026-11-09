@@ -29,7 +29,8 @@ textarea{min-height:190px;resize:vertical;font:14px/1.5 ui-monospace,SFMono-Regu
 .submit{width:100%;padding:15px 20px;font-size:16px;background:linear-gradient(135deg,var(--blue),var(--navy))}
 .submit:disabled{opacity:.65;cursor:wait}
 .status{margin-top:12px;color:var(--muted);font-size:13px}
-.public-list{margin-bottom:18px}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}.public-table{width:100%;border-collapse:collapse;min-width:650px;font-size:14px}.public-table th,.public-table td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line)}.public-table th{background:#eef5ff;color:var(--navy)}.public-table tr:last-child td{border-bottom:0}.list-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.list-status{font-size:13px;color:var(--muted)}.privacy-consent{display:flex;gap:12px;align-items:flex-start;font-weight:400;line-height:1.6}.privacy-consent input{width:20px;height:20px;flex:0 0 auto;margin-top:3px;accent-color:var(--blue)} \nfooter{text-align:center;color:var(--muted);font-size:13px;padding:10px}
+.public-list{margin-bottom:18px}.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}.public-table{width:100%;border-collapse:collapse;min-width:650px;font-size:14px}.public-table th,.public-table td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--line)}.public-table th{background:#eef5ff;color:var(--navy)}.public-table tr:last-child td{border-bottom:0}.list-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.list-status{font-size:13px;color:var(--muted)}.privacy-consent{display:flex;gap:12px;align-items:flex-start;font-weight:400;line-height:1.6}.privacy-consent input{width:20px;height:20px;flex:0 0 auto;margin-top:3px;accent-color:var(--blue)} 
+footer{text-align:center;color:var(--muted);font-size:13px;padding:10px}
 .tournament-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-top:12px}
 .tournament-card{display:flex;flex-direction:column;gap:8px;text-align:left;padding:10px;border:2px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);cursor:pointer}
 .tournament-card:hover{border-color:var(--blue)}
@@ -48,7 +49,14 @@ textarea{min-height:190px;resize:vertical;font:14px/1.5 ui-monospace,SFMono-Regu
 <p id="pageSubtitle">Preencha seus dados e, quando aplicável, prepare sua decklist no Limitless.</p>
 </header>
 
-<section class="panel public-list" aria-labelledby="publicListTitle">\n<h2 id="publicListTitle">Jogadores inscritos — inscrições aprovadas</h2>\n<p class="muted">Confira quem já está confirmado em cada torneio antes de realizar sua inscrição.</p>\n<div class="list-toolbar"><span id="publicListStatus" class="list-status" role="status" aria-live="polite">Carregando inscritos...</span><button type="button" class="secondary" id="refreshPublicList">Atualizar lista</button></div>\n<div class="table-wrap" style="margin-top:12px"><table class="public-table"><thead><tr><th>Player ID</th><th>Nome</th><th>Sobrenome</th><th>Ano de nascimento</th><th>Torneio</th></tr></thead><tbody id="approvedRegistrations"><tr><td colspan="5">Carregando...</td></tr></tbody></table></div>\n</section>\n\n<form id="registrationForm">
+<section class="panel public-list" aria-labelledby="publicListTitle">
+<h2 id="publicListTitle">Jogadores inscritos — inscrições aprovadas</h2>
+<p class="muted">Confira quem já está confirmado em cada torneio antes de realizar sua inscrição.</p>
+<div class="list-toolbar"><span id="publicListStatus" class="list-status" role="status" aria-live="polite">Carregando inscritos...</span><button type="button" class="secondary" id="refreshPublicList">Atualizar lista</button></div>
+<div class="table-wrap" style="margin-top:12px"><table class="public-table"><thead><tr><th>Player ID</th><th>Nome</th><th>Sobrenome</th><th>Ano de nascimento</th><th>Torneio</th></tr></thead><tbody id="approvedRegistrations"><tr><td colspan="5">Carregando...</td></tr></tbody></table></div>
+</section>
+
+<form id="registrationForm">
 <section class="panel">
 <h2>1. Escolha o torneio</h2>
 <div class="field">
@@ -108,6 +116,12 @@ textarea{min-height:190px;resize:vertical;font:14px/1.5 ui-monospace,SFMono-Regu
 <input id="aceite" type="checkbox" name="fi-text-aceite" value="Aceito: Declaro que estou ciente de que o Torneio de Pokémon Estampas Ilustradas seguirá as regras oficiais de jogo disponíveis em https://tcg.pokemon.com/pt-br/learn/, e confirmo que o participante inscrito já sabe jogar de acordo com essas regras." required>
 <span>Declaro que estou ciente de que o Torneio de Pokémon Estampas Ilustradas seguirá as regras oficiais de jogo disponíveis em: <a href="https://tcg.pokemon.com/pt-br/learn/" target="_blank" rel="noopener noreferrer">https://tcg.pokemon.com/pt-br/learn/</a>, e confirmo que o participante inscrito já sabe jogar de acordo com essas regras.</span>
 </label>
+<div class="field" style="margin-top:18px">
+<label class="privacy-consent" for="autorizacaoPublicacao">
+<input id="autorizacaoPublicacao" type="checkbox" required>
+<span>Autorizo a divulgação, nesta página pública de inscrições, do Player ID, nome, sobrenome, ano de nascimento e torneio do participante, exclusivamente para consulta dos inscritos. Se o participante for menor de 18 anos, declaro que sou seu responsável legal e autorizo essa divulgação.</span>
+</label>
+</div>
 </section>
 
 <section class="panel">
@@ -132,7 +146,8 @@ const submitButton=document.getElementById('submitButton');
 let tournaments=[];
 
 function validateDecklist(raw){
-  const lines=raw.split(/\r?\n/).map(line=>line.trim()).filter(Boolean);
+  const lines=raw.split(/\r?
+/).map(line=>line.trim()).filter(Boolean);
   const headings={pokemon:null,trainer:null,energy:null};
   const cards={pokemon:0,trainer:0,energy:0};
   const entries={pokemon:0,trainer:0,energy:0};
@@ -196,9 +211,12 @@ function renderTournament(){
   if(!selected){tournamentInfo.textContent='Selecione um torneio para ver os detalhes.';decklist.required=false;deckRequiredMark.textContent='';deckSection.hidden=true;return;}
   const parts=[selected.nome,selected.data,selected.horario,selected.valor,selected.formato].filter(Boolean);
   const prizeText=Array.isArray(selected.premiacao)&&selected.premiacao.length
-    ? '\nPremiação: '+selected.premiacao.join(' • ')
-    : (typeof selected.premiacao==='string'&&selected.premiacao.trim()?'\nPremiação: '+selected.premiacao:'');
-  tournamentInfo.textContent=parts.join(' • ')+(prizeText||'')+(selected.observacao?'\n'+selected.observacao:'');
+    ? '
+Premiação: '+selected.premiacao.join(' • ')
+    : (typeof selected.premiacao==='string'&&selected.premiacao.trim()?'
+Premiação: '+selected.premiacao:'');
+  tournamentInfo.textContent=parts.join(' • ')+(prizeText||'')+(selected.observacao?'
+'+selected.observacao:'');
   decklist.required=selected.decklistObrigatoria===true;
   deckSection.hidden=!decklist.required;
   deckRequiredMark.textContent=decklist.required?'*':'(quando aplicável)';
@@ -329,7 +347,9 @@ form.addEventListener('submit',async function(e){
   if(selected.decklistObrigatoria===true){
     const validation=validateDecklist(decklist.value);
     if(!validation.valid){
-      deckValidation.textContent='A decklist precisa ser corrigida:\n• '+validation.errors.join('\n• ');
+      deckValidation.textContent='A decklist precisa ser corrigida:
+• '+validation.errors.join('
+• ');
       deckValidation.style.color='#b42318';
       decklist.focus();
       alert('A decklist não passou na validação. Confira as mensagens abaixo do campo.');
@@ -356,7 +376,8 @@ form.addEventListener('submit',async function(e){
     playerId:document.getElementById('playerId').value.trim(),
     telefone:telefoneValor,
     anoNascimento:document.getElementById('anoNascimento').value.trim(),
-    decklist:selected.decklistObrigatoria===true?decklist.value.trim():'',\n    autorizacaoPublicacao:document.getElementById('autorizacaoPublicacao').checked
+    decklist:selected.decklistObrigatoria===true?decklist.value.trim():'',
+    autorizacaoPublicacao:document.getElementById('autorizacaoPublicacao').checked
   };
 
   submitButton.disabled=true;
